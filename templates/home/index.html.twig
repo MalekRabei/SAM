@@ -1,0 +1,444 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        {% block leftbar %}
+            {{ parent() }}
+        {% endblock %}
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+
+        <div class="dashboard-wrapper">
+
+            <div class="dashboard-ecommerce">
+
+                <!-- ============================================================== -->
+                <!-- end pageheader  -->
+                <!-- ============================================================== -->
+
+
+
+                <div class="row">
+                    <!-- ============================================================== -->
+
+                    <!-- ============================================================== -->
+
+                    <!-- recent orders  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-9 col-sm-12 col-12" id="entitiesNav">
+                        <div class="card">
+                            <br><br>
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                            <h5 class="card-header">La Liste des Employées</h5>
+
+                            <div class="card-body p-0">
+
+                                <div class="table-responsive" >
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                        <tr class="border border-left-0">
+                                            <th class="border border-left-0">#</th>
+
+                                            <th class="border border-left-0">Nom</th>
+                                            <th class="border border-left-0">Societe</th>
+                                            <th class="border border-left-0">Présence</th>
+                                            <th class="border border-left-0">Retard</th>
+                                            <th class="border border-left-0">Poste</th>
+                                            <th class="border border-left-0">Matricule</th>
+                                            <th class="border border-left-0">COD</th>
+                                            <th class="border border-left-0">T</th>
+                                            <th class="border border-left-0">Positionnement</th>
+                                            <th>
+                                            <td>
+                                                <div class="dropdown float-right">
+                                                    <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
+
+                                                    </a>
+
+                                                    <div class="dropdown-menu dropdown-menu-right">
+
+                                                        <a href="{{ path('PDF') }}" class="dropdown-item" >Export Rapport</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                        </thead>
+
+
+                                        <tbody>
+                                        {%for entity in list%}
+
+                                            <tr>
+                                                <form  name="fm{{ entity.id }}" id="fm{{ entity.id }}" action="{{ path('presence',{id: entity.id}) }}" method="post">
+
+                                                    <td>{{ entity.id }}</td>
+
+                                                    <td>
+
+                                                        <div class="m-r-10">{{ entity.nom }} {{ entity.prenom }}</div>
+                                                    </td>
+                                                    <td> <!--label class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox"  class="custom-control-input" disabled>
+                                                <span class="custom-control-label">Terna</span>
+                                            </label-->
+                                                        <label class="custom-control custom-checkbox custom-control-inline">
+                                                            <input type="checkbox" checked="" class="custom-control-input"disabled>
+                                                            <span class="custom-control-label">{{ entity.societe }}</span>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-5 col-sm-8 col-lg-6 pt-1">
+                                                            <div class="switch-button switch-button-success">
+                                                                <input type="checkbox"   value="OUI" name="switch16{{ entity.id }}" id="switch16{{ entity.id }}">
+                                                                <span><label for="switch16{{ entity.id }}"></label></span>
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <div class="col-12 col-sm-8 col-lg-6 pt-1">
+                                                            <div class="switch-button switch-button-danger">
+                                                                <input  type="checkbox" name="switch18{{ entity.id }}" id="switch18{{ entity.id }}" ><span>
+                                                               <label for="switch18{{ entity.id }}"></label></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td >
+                                                        <select class="form-control" id="input-select" style="width:120px" disabled>
+                                                            <option selected> {{ entity.poste }}</option>
+                                                            <option >Directeur</option>
+                                                            <option >Chef D'équipes</option>
+                                                            <option>Informatique</option>
+                                                            <option>WebScan</option>
+                                                            <option>Vidéos</option>
+                                                            <option>Femme de Menage</option>
+
+                                                        </select>
+                                                    </td>
+
+                                                    <td>{{ entity.matricule }}</td>
+                                                    <td>{{ entity.code }}</td>
+                                                    <td>{{ entity.t }}</td>
+                                                    <td>
+                                                        <select class="form-control" id="input-select"  name="idPoste">
+
+                                                            {% for poste in poste %}
+                                                                <option value="{{ poste.id}}" >{{ poste.poste }}</option>
+                                                            {% endfor %}
+                                                            <a href="#">
+                                                                <span class="glyphicon glyphicon-pencil"></span>
+                                                            </a>
+
+                                                    <td>
+
+                                                        <button style=" height: 36px;width: 56px;"type="submit" name="btn{{ entity.id }}" id="btn{{ entity.id }}" style="font-size:10px">
+                                                            <a  style=" height: 37px;width: 48px;"><i class="fa fa-check" ></i></a>
+
+                                                        </button>
+                                                    </td>
+
+                                                    <td>
+
+                                                        <button id="modif {{ entity.id }}" name="modif{{ entity.id }}" style="font-size:10px"><a style="height: 30px;width: 40px; " class="nav-link" href="{{ path('modifEmployee',{id: entity.id}) }}"><i class="fa fa-edit"></i></a></button>
+                                                    </td>
+                                                    <td>
+
+                                                        <button id="del {{ entity.id }}"  name="del {{ entity.id }}" style="font-size:10px"><a style="height: 30px;width: 40px; "class="nav-link"  onclick="return confirm('Etes-vous sûr de supprimer cet(te) employée?')" href="{{ path('suppEmployee',{id:entity.id}) }}"><i class="fa fa-trash"></i></a></button>
+                                                    </td>
+
+                                                </form>
+                                            </tr>
+                                        {% else %}
+                                            <h3>Le tableau est vide</h3>
+                                        {% endfor %}
+
+                                        {% else %}
+                                            <center><div>
+                                                    <p> Vous n'est pas encore connecté !! </p>
+                                                    <a style="color: #0a3c93; font-weight: bold" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                                </div> </center>
+                                        {% endif %}
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- customer acquistion  -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end customer acquistion  -->
+                <!--
+                            <!-- ============================================================== -->
+                <!-- end recent orders  -->
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- end navbar -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- left sidebar -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end left sidebar -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- wrapper  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            Copyright © 2019 S.A.M
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- end wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    {% block javascripts %}
+
+        <script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+        <!-- bootstap bundle js -->
+        <script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+        <!-- slimscroll js -->
+        <script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+        <!-- main js -->
+        <script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+        <!-- chart chartist js -->
+        <script src="{{ asset('Design/assets/vendor/charts/chartist-bundle/chartist.min.js') }}"></script>
+        <!-- sparkline js -->
+        <script src="{{ asset('Design/assets/vendor/charts/sparkline/jquery.sparkline.js') }}"></script>
+        <!-- morris js -->
+        <script src="{{ asset('Design/assets/vendor/charts/morris-bundle/raphael.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/morris-bundle/morris.js') }}"></script>
+        <!-- chart c3 js -->
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/c3.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
+        <script src="{{ asset('Design/assets/libs/js/dashboard-ecommerce.js') }}"></script>
+
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                let searchRequest = null;
+                $("#search").keyup(function() {
+                    let minlength = 1;
+                    let that = this;
+                    let value = $(this).val();
+                    let entitySelector = $("#entitiesNav").html('');
+                    if (value.length >= minlength ) {
+                        if (searchRequest != null)
+                            searchRequest.abort();
+                        searchRequest = $.ajax({
+                            type: "GET",
+                            url: "{{ path('search') }}",
+                            data: {
+                                'q' : value
+                            },
+                            dataType: "text",
+                            success: function(msg){
+                                //we need to check if the value is the same
+                                if (value===$(that).val()) {
+                                    let result = JSON.parse(msg);
+                                    $.each(result, function(key, arr) {
+                                        $.each(arr, function(id, value) {
+                                            if (key === 'employee') {
+                                                if (id !== 'error') {
+                                                    console.log(value[1]);
+                                                    entitySelector.append(
+                                                        '<div class="col-xl-12 col-lg-12 col-md-9 col-sm-12 col-12">'+
+                                                        ' <div class="card">'+
+                                                        '<table class="table">'+
+                                                        '<thead class="bg-light">'+
+                                                        '<tr class="border border-left-0">'+
+                                                        '<th class="border border-left-0">#</th>'+
+                                                        '<th class="border border-left-0">Nom</th>'+
+                                                        '<th class="border border-left-0">Societe</th>'+
+                                                        '<th class="border border-left-0">Présence</th>'+
+                                                        '<th class="border border-left-0">Retard</th>'+
+                                                        '<th class="border border-left-0">Poste</th>'+
+                                                        '<th class="border border-left-0">Matricule</th>'+
+                                                        '<th class="border border-left-0">COD</th>'+
+                                                        '<th class="border border-left-0">T</th>'+
+                                                        '<th class="border border-left-0">Positionnement</th>'+
+                                                        '<td>'+
+                                                        '<div class="dropdown float-right">'+
+                                                        '<a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">'+
+
+                                                        '</a>'+
+
+                                                        '<div class="dropdown-menu dropdown-menu-right">'+
+
+                                                        '<a href="javascript:void(0);" class="dropdown-item" href="{{ path('PDF') }}">Export Report</a>'+
+
+                                                        '</div>'+
+                                                        '</div>'+
+                                                        '</td>'+
+
+                                                        '</tr>'+
+                                                        '</thead>'+
+                                                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+
+                                                        '<tbody>'+
+
+                                                        '<tr>'+
+                                                        '<td>'+value[0]+'</td>'+
+
+                                                        '<td>'+
+                                                        '<div class="m-r-10">'+value[1]+' '+value[2] +'</div>'+
+                                                        '</td>'+
+                                                        '<td>' +
+                                                        '<label class="custom-control custom-checkbox custom-control-inline">'+
+                                                        '<input type="checkbox" checked="" class="custom-control-input"disabled>'+
+                                                        '<span class="custom-control-label">'+value[3]+'</span>'+
+                                                        '</label></td>'+
+                                                        ' <td>'+
+                                                        '<div class="col-5 col-sm-8 col-lg-6 pt-1">'+
+                                                        ' <div class="switch-button switch-button-success">'+
+                                                        ' <input type="checkbox" checked="" name="switch16" id="switch16"value="" ><span>'+
+                                                        '<label for="switch16"></label></span>'+
+                                                        ' </div>'+
+                                                        '</div>'+
+                                                        '</td>'+
+
+
+                                                        '<td>'+
+                                                        ' <div class="form-group row">'+
+                                                        '<label class="col-12 col-sm-3 col-form-label text-sm-right"></label>'+
+
+                                                        '<div class="col-12 col-sm-8 col-lg-6 pt-1">'+
+                                                        '<div class="switch-button switch-button-danger">'+
+                                                        '<input type="checkbox" checked="" name="switch18" id="switch18" value="on">'+'<span>'+
+                                                        '<label for="switch18">'+'</label>'+'</span>'+
+                                                        '</div>'+
+                                                        '</div>'+
+                                                        '</div>'+
+                                                        '</td>'+
+
+
+                                                        '<td>'+'<select class="form-control" id="input-select" disabled>'+
+                                                        '<option selected>'+ value[4]+'</option>'+
+
+
+                                                        '</select>'+
+                                                        '</td>'+
+
+                                                        '<td>'+ value[5]+'</td>'+
+                                                        '<td>'+ value[6]+'</td>'+
+                                                        '<td>'+ value[7]+'</td>'+
+                                                        '<td>'+'<select class="form-control" id="input-select" disabled>'+
+                                                        '<option selected>'+ value[8]+'</option>'+
+
+                                                        '<a href="#">'+
+                                                        '<span class="glyphicon glyphicon-pencil">'+'</span>'+
+                                                        '</a>'+
+
+
+                                                        '<td>'+
+
+                                                        '<button style="font-size:10px">'+'<a class="nav-link" href="/SAM/web/app_dev.php/modifEmployee/'+id+'">'+'</a>'+'<i class="fa fa-edit">'+'</i>'+'</button>'+
+                                                        '</td>'+
+                                                        '<td>'+
+
+                                                        '<button style="font-size:10px">'+'<a class="nav-link"  onclick="return confirm(\'are u sure?\')" href="/SAM/web/app_dev.php/suppEmployee/'+id+'">'+'</a>'+'<i class="fa fa-trash">'+'</i>'+'</button>'+
+                                                        '</td>'+
+
+
+
+
+                                                        '</tr>'+
+
+
+                                                            {% else %}
+                                                        '<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>'+
+                                                            {% endif %}
+                                                        '</tbody>'+
+                                                        '</table>'+
+                                                        '</div>'+
+                                                        '</div>'
+
+                                                    );
+                                                } else {
+                                                    entitySelector.append(
+                                                        '<li class="errorLi">Aucun employée avec ce nom </li>');
+                                                }
+                                            }
+                                        });
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
+    {% endblock %}
+
+    </body>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends 'base.html.twig' %}
+
+
+
+ {% block head %}
+     {{ parent() }}
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block title %}  <title>Ajouter Employees</title>{% endblock %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link href="{{ asset('Design/assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Design/assets/libs/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/fontawesome/css/fontawesome-all.css') }}">
+    <script>
+        function myFunction() {
+            var ck1 = document.forms[0]
+            var txt = "";
+            var i;
+            for (i = 0; i < ck1.length; i++) {
+                if (ck1[i].checked) {
+                    txt = txt + ck1[i].value + " ";
+                }
+            }
+
+
+        }
+    </script>
+
+{% endblock %}
+{% block body %}
+<body>
+<!-- ============================================================== -->
+<!-- main wrapper -->
+<!-- ============================================================== -->
+<div class="dashboard-main-wrapper">
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    {% block header %}
+        {{ parent() }}
+
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end navbar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- left sidebar -->
+    <!-- ============================================================== -->
+    {% block leftbar %}
+        {{ parent() }}
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end left sidebar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- validation form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end validation form -->
+                <!-- ============================================================== -->
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end basic form -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- horizontal form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end horizontal form -->
+                <!-- ============================================================== -->
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- valifation types -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Ajouter Employees</h5>
+                        <div class="card-body">
+                            <form id="validationform" data-parsley-validate="" novalidate="" method="post" action="{{ path('ajoutEmployee')}}">
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Nom</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input type="text" required="" placeholder="" class="form-control" name="nom" id="nom">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Prénom</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input type="text" required=""  placeholder="" class="form-control" name="prenom" id="prenom">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Societe</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <div class="col-sm-6">
+                                            <div class="custom-controls-stacked">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input id="ck1" name="ck1" type="checkbox"
+                                                           data-parsley-multiple="groups"
+                                                           data-parsley-mincheck="1"
+                                                           data-parsley-errors-container="#error-container1"
+                                                           class="custom-control-input" onclick="myFunction()"
+                                                    value="ShapeTek">
+                                                    <span class="custom-control-label">ShapeTek</span>
+                                                </label>
+                                                <label class="custom-control custom-checkbox">
+                                                    <input id="ck2" name="ck1"
+                                                           type="checkbox"
+                                                           data-parsley-multiple="groups"
+                                                           value="Terna"
+                                                           data-parsley-mincheck="1"
+                                                           data-parsley-errors-container="#error-container1"
+                                                           class="custom-control-input" onclick="myFunction()">
+                                                    <span class="custom-control-label">Terna</span>
+                                                </label>
+
+                                                <div id="error-container1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Poste</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <select class="form-control" id="input-select" name="poste">
+                                            <option>Directeur</option>
+                                            <option>Chef D'équipes</option>
+                                            <option selected>Informatique</option>
+                                            <option>WebScan</option>
+                                            <option>Vidéos</option>
+                                            <option>Femme de Menage</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Matricule</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input type="text" required=""  placeholder="" class="form-control" name="matricule" id="matricule">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Code</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input type="text" required="" placeholder="" class="form-control" name="code" id="code">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">T</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input required="" type="number" min="6" max="100000" placeholder="" class="form-control"
+                                               name="t" id="t">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Positionnement</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <select class="form-control" id="input-select"  name="idPoste">
+
+
+                                            {% for pos in pos %}
+                                                <option value="{{ pos.id}}" >{{ pos.poste }}</option>
+                                            {% endfor %}
+                                            <a href="#">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </a>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row text-right">
+                                    <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                        <input type="submit" value="Ajouter" class="btn btn-space btn-primary"></input>
+                                        <input type="reset" value="Annuler" class="btn btn-space btn-secondary"></input>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================================== -->
+            <!-- end valifation types -->
+            <!-- ============================================================== -->
+        </div>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- footer -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- end footer -->
+    <!-- ============================================================== -->
+</div>
+</div>
+<!-- ============================================================== -->
+<!-- end main wrapper -->
+<!-- ============================================================== -->
+<!-- Optional JavaScript -->
+<script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/parsley/parsley.js') }}"></script>
+<script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+<script>
+    $('#form').parsley();
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+{% endblock %}

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>S.A.M</title>
+    {% block stylesheet %}
+
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link href="{{ asset('Design/assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Design/assets/libs/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/fontawesome/css/fontawesome-all.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/charts/chartist-bundle/chartist.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/charts/morris-bundle/morris.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/charts/c3charts/c3.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/flag-icon-css/flag-icon.min.css') }}">
+        <script>
+            function changeValue1() {
+                var present = document.getElementById('switch16');
+
+                if (present.checked == false) {
+                    present.value = 'NON';
+
+                } else {
+                    present.value = 'OUI';
+                }
+
+            }
+            function changeValue2() {
+                var retard = document.getElementById('switch18');
+                if (retard.checked == true)
+                {
+                    retard.value = 'OUI';
+                }else {
+                    retard.value='NON';
+
+                }
+
+            }
+
+        </script>
+
+
+    {% endblock %}
+    {% endblock %}
+</head>
+
+
+
+<body>
+
+{% block body %}
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        {% block header %}
+            <div class="dashboard-header">
+
+                <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                    <img src="{{ asset('Design/sa.png')}}" style="width:100px;height:70px;">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto navbar-right-top">
+                            <li class="nav-item">
+                                <div id="custom-search" class="top-search-bar">
+                                    <input class="form-control" type="text" id="search" placeholder="Recherche..">
+                                </div>
+                            </li>
+
+
+                            <br>
+                            <input type="text" name="currentDay" value="{{currentDate |date("m/d/Y H:i:s") }}" disabled>
+
+
+                            <li class="nav-item dropdown notification">
+                                <a class="nav-link nav-icons" href="#" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-fw fa-bell"></i> <span class="indicator"></span></a>
+                                <ul class="dropdown-menu dropdown-menu-right notification-dropdown">
+                                    <li>
+
+                                        <div class="notification-title"> Notification</div>
+                                        <div class="notification-list">
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item list-group-item-action active">
+                                                    <div class="notification-info">
+                                                        <div class="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="" class="user-avatar-md rounded-circle"></div>
+                                                        <div class="notification-list-user-block"><span class="notification-list-user-name">mariem baccouch</span>congé maternité
+                                                            <div class="notification-date">2 jours</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                {% for entity in notifications %}
+
+                                                    <a href="#" id="notifications" class="list-group-item list-group-item-action">
+
+                                                        <div class="notification-info">
+                                                            <div class="notification-list-user-block">
+                                                                <span class="notification-list-user-name">{{ entity.title}}</span>
+                                                                {{ entity.description }}
+                                                                <div class="notification-date">{{ entity.date  | date('d/m/Y H:i:s') }}</div>
+
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                {% else %}
+                                                    <p> Pas de notifications !</p>
+                                                {% endfor %}
+
+
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+
+
+
+
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        {% endblock %}
+        {% block leftbar %}
+            {% if 'ROLE_ADMIN' in app.user.roles %}
+            <div class="nav-left-sidebar sidebar-dark">
+                <div class="menu-list">
+                    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+
+                        <div class="divider"></div>
+
+
+                    </div>
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-divider">
+                                    Dashboard
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Terna </a>
+                                    <div id="submenu-1" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#" >Totale  0</a>
+
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">Présence  0</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" >Absence 0</a>
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </li>
+
+                                <li class="nav-item ">
+                                    <a class="nav-link active" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-user-circle"></i>ShapeTek </a>
+                                    <div id="submenu-2" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" >Totale 0</a>
+
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" >Présence 0</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" >Absence 0</a>
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4">
+                                        <i class="fa fa-fw fa-user"></i>Les Employées</a>
+                                    <div id="submenu-4" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('ajoutEmployee') }}">Ajouter Employées</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('index') }}">Modifer Employées</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-home"></i>Les Congés</a>
+                                    <div id="submenu-5" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Ajouter un Congé</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('listConge') }}">Liste de congés</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('soldeConge') }}">Solde</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-check-circle"></i>Les Autorisations</a>
+                                    <div id="submenu-6" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('listAutorisation') }}">Liste des autorisation</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Ajouter une autorisation</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href=""></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-car"></i>Perse</a>
+                                    <div id="submenu-7" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('ajoutPerse') }}">Gestion Perse</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+                    </nav>
+                    <ul class="nav menu">
+                        <div class="nav-divider">
+
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <font color="#f5f5f5"> <a style="color: #f5f5f5;" href="{{ path('fos_user_profile_show') }}"> {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} </a>
+                            </font>
+
+                        </div>
+
+                        <li class="nav-divider">
+
+
+                            <div >
+
+                                <em class="fa fa-power-off">&nbsp;</em>
+                                <a href="{{ path('fos_user_security_logout') }}" target="_blank"
+                                   class="btn btn-label btn-label-brand btn-sm btn-bold">
+                                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                                {% else %}
+                                    <em class="fa fa-power-off">&nbsp;</em>
+                                    <a href="{{ path('index') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                {% endif %}
+                            </div>
+
+                        </li>
+
+
+                        <li></li>
+
+                    </ul>
+                </div>
+
+            </div>
+          {% else %}
+            <div class="nav-left-sidebar sidebar-dark">
+                <div class="menu-list">
+                    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+
+                        <div class="divider"></div>
+
+
+                    </div>
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav flex-column">
+                                <li class="nav-divider">
+                                    Dashboard
+                                </li>
+
+
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-home"></i>Les Congés</a>
+                                    <div id="submenu-5" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Ajouter un Congé</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('listConge') }}">Liste de congés</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('soldeConge') }}">Solde</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-check-circle"></i>Les Autorisations</a>
+                                    <div id="submenu-6" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('listAutorisation') }}">Liste des autorisation</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Ajouter une autorisation</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href=""></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-5">
+                                        <i class="fa fa-fw fa-car"></i>Perse</a>
+                                    <div id="submenu-7" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('ajoutPerse') }}">Gestion Perse</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+                    </nav>
+                    <ul class="nav menu">
+                        <div class="nav-divider">
+
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <font color="#f5f5f5"> <a style="color: #f5f5f5;" href="{{ path('fos_user_profile_show') }}"> {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} </a>
+                            </font>
+
+                        </div>
+
+                        <li class="nav-divider">
+
+
+                            <div >
+
+                                <em class="fa fa-power-off">&nbsp;</em>
+                                <a href="{{ path('fos_user_security_logout') }}" target="_blank"
+                                   class="btn btn-label btn-label-brand btn-sm btn-bold">
+                                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a>
+                                {% else %}
+                                    <em class="fa fa-power-off">&nbsp;</em>
+                                    <a href="{{ path('index') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                {% endif %}
+                            </div>
+
+                        </li>
+
+
+                        <li></li>
+
+                    </ul>
+                </div>
+
+            </div>
+            {% endif %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        Copyright © 2019 S.A.M
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+</body>
+
+</html>

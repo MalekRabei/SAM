@@ -1,0 +1,104 @@
+index:
+    path: /
+    controller: App\Controller\PerseController::new
+
+fos_user:
+  resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+mgilet_notification:
+  resource: "@MgiletNotificationBundle/Controller/"
+  prefix: /notifications
+
+updated_index:
+  path:     /updated
+  defaults: { _controller: App\Controller\HomeController::updatedIndex }
+
+
+PDF:
+  path: /listPDF
+  controller: App\Controller\HomeController::listPDF
+
+ajoutEmployee:
+  path:     /admin/ajoutEmployee
+  defaults: { _controller:  App\Controller\EmployeeController::ajoutEmployee }
+
+modifEmployee:
+  path:     /admin//modifEmployee/{id}
+  defaults: { _controller: App\Controller\EmployeeController::modifEmployee }
+
+suppEmployee:
+  path:     /admin/suppEmployee/{id}
+  defaults: { _controller: App\Controller\EmployeeController::index }
+
+
+ajoutConge:
+  path:     /ajoutConge
+  defaults: { _controller: App\Controller\CongeController::ajoutConge }
+
+modifConge:
+  path:     /modifConge/{id}
+  defaults: { _controller: App\Controller\CongeController::modifConge }
+
+suppConge:
+  path:     /suppConge/{id}
+  defaults: { _controller: App\Controller\CongeController::suppConge }
+
+listConge:
+  path:     /listConge
+  defaults: { _controller: App\Controller\CongeController::listConge }
+
+soldeConge:
+  path:     /soldeConge
+  defaults: { _controller: App\Controller\EmployeeController::soldeConge }
+
+search:
+  path:     /search
+  defaults: { _controller: App\Controller\EmployeeController::index }
+
+presence:
+  path:     /presence/{id}
+  defaults: { _controller: App\Controller\HomeController::Present }
+
+demandeAutorisation:
+  path:     /autorisation/demande
+  defaults: { _controller: App\Controller\AutorisationController::new }
+
+
+editAutorisation:
+  path:     /autorisation/modifier/{id}
+  defaults: { _controller: App\Controller\AutorisationController::update }
+
+showAutorisation:
+  path:     /autorisation/details
+  defaults: { _controller: App\Controller\AutorisationController::index }
+
+listAutorisation:
+  path:     /autorisation/liste
+  defaults: { _controller: App\Controller\AutorisationController::index}
+
+suppAutorisation:
+  path:     /autorisation/supp/{id}
+  defaults: { _controller: App\Controller\AutorisationController::delete}
+
+
+ajoutPerse:
+  path:     /perse/ajouter
+  defaults: { _controller: App\Controller\PerseController::new }
+
+
+editPerse:
+  path:     /perse/modifier/{id}
+  defaults: { _controller: App\Controller\PerseController::edit }
+
+showPerse:
+  path:     /perse/details
+  defaults: { _controller: App\Controller\PerseController::show }
+
+listPerse:
+  path:     /admin/perse/liste
+  defaults: { _controller: App\Controller\PerseController::admin }
+
+suppPerse:
+  path:     /perse/supp/{id}
+  defaults: { _controller: App\Controller\PerseController::delete }
+

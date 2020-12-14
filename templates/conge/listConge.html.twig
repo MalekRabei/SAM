@@ -1,0 +1,212 @@
+{% extends 'base.html.twig' %}
+
+{% block head %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Liste de congés</title>
+    {% block stylesheet%}
+        {{ parent() }}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link href="{{ asset('Design../assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('Design/assets/libs/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/fontawesome/css/fontawesome-all.css') }}">
+    <link href="{{ asset('Design/assets/vendor/full-calendar/css/fullcalendar.css' ) }}" rel="stylesheet" />
+    <link href="{{ asset('Design/assets/vendor/full-calendar/css/fullcalendar.print.css') }}" rel="stylesheet" media="print" />
+
+
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css">
+    {% endblock %}
+
+
+    {%  block script %}
+
+    <script> document.addEventListener('DOMContentLoaded', () => {
+            var calendarEl = document.getElementById('calendar-holder');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                defaultView: 'dayGridMonth',
+                locale: 'fr',
+                editable: true,
+                buttonText: {
+                    today:    'Aujourd\'hui',
+                    month:    'Mois',
+                    week:     'Semaine',
+                    day:      'Jour',
+                    list:     'Liste'
+                },
+                eventSources: [
+                    {
+                        url: "/fc-load-events",
+                        method: "POST",
+                        extraParams: {
+                            filters: JSON.stringify({})
+                        },
+                        failure: () => {
+                            alert("Une erreur est survenue lors du chargement de l'agenda !");
+                        },
+                    },
+                ],
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                },
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid' ], // https://fullcalendar.io/docs/plugin-index
+                timeZone: 'UTC',
+            });
+            calendar.render();
+        });  </script>
+    {% endblock %}
+
+</head>
+{% endblock %}
+
+{% block body %}
+<body>
+<!-- ============================================================== -->
+<!-- main wrapper -->
+<!-- ============================================================== -->
+<div class="dashboard-main-wrapper">
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+    {% block header %}
+        {{ parent() }}
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end navbar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- left sidebar -->
+    <!-- ============================================================== -->
+    {% block leftbar %}
+        {{ parent() }}
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end left sidebar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- simple calendar -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end simple calendar -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- events calendar -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id='wrap'>
+
+
+                            <div style="height:600px; width:650px; margin-left: 300px" >
+                                    <a style="color: #002752" href="{{ path('ajoutConge') }}"> + Ajouter un congé</a>
+                                {% block Calendar %}
+                                    <div id="calendar-holder"></div>
+                                {% endblock %}
+                            </div>
+
+
+
+                               <div id='external-events' style="margin-top: -600px; margin-left: 0px">
+                                   <h4>Liste Totale Terna</h4>
+                                   <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
+                                   <div class='fc-event'>Totale maladie 1 </div>
+                                   <div class='fc-event bg-secondary border-secondary'>Totale familiale 0</div>
+                                   <div class='fc-event '>Totale maternité 0</div>
+                                   <div class='fc-event bg-info border-info'>Totale Repos 0</div>
+                                   <div class='fc-event bg-brand border-brand'>Totale 3 </div>
+                               </div>
+
+                               <div id='external-events' style="margin-top: -240px; margin-left: 0px">
+                                   <h4>Liste Totale Shaptek</h4>
+                                   <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
+                                   <div class='fc-event'>Totale maladie 0</div>
+                                   <div class='fc-event bg-secondary border-secondary'>Totale familiale 1</div>
+                                   <div class='fc-event '>Totale maternité  1</div>
+                                   <div class='fc-event bg-info border-info'>Totale Repos 0</div>
+                                   <div class='fc-event bg-brand border-brand'>Totale 2</div>
+
+
+                               </div>
+
+
+
+
+
+
+
+
+
+
+
+                                <div style='clear:both'>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ============================================================== -->
+            <!-- end events calendar -->
+            <!-- ============================================================== -->
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- end footer -->
+    <!-- ============================================================== -->
+</div>
+<!-- ============================================================== -->
+<!-- end main wrapper -->
+<!-- ============================================================== -->
+<!-- Optional JavaScript -->
+<script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/full-calendar/js/moment.min.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/full-calendar/js/fullcalendar.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/full-calendar/js/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/full-calendar/js/calendar.js') }}"></script>
+<script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@4.1.0/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.js"></script>
+
+</body>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<body>
+<!-- ============================================================== -->
+<!-- main wrapper -->
+<!-- ============================================================== -->
+<div class="dashboard-main-wrapper">
+
+    <!-- ============================================================== -->
+    <!-- navbar -->
+    <!-- ============================================================== -->
+    {% block header %}
+        {{ parent() }}
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end navbar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- left sidebar -->
+    <!-- ============================================================== -->
+    {% block leftbar %}
+        {{ parent() }}
+    {% endblock %}
+    <!-- ============================================================== -->
+    <!-- end left sidebar -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- wrapper  -->
+    <!-- ============================================================== -->
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- pageheader -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end pageheader -->
+            <!-- ============================================================== -->
+
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- validation form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end validation form -->
+                <!-- ============================================================== -->
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- basic form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end basic form -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- horizontal form -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end horizontal form -->
+                <!-- ============================================================== -->
+            </div>
+            <div class="row">
+                <!-- ============================================================== -->
+                <!-- valifation types -->
+                <!-- ============================================================== -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="card">
+                        <h5 class="card-header">Demande Autorisation </h5>
+                        <div class="card-body">
+                            <form id="validationform" data-parsley-validate="" novalidate="" method="post" action="{{ path('demandeAutorisation') }}">
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Motif</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input required="" type="text" id="motif" name="motif"
+                                               placeholder="" class="form-control">
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Nom</label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+
+                                            <select class="form-control" id="input-select" name="idEmployee">
+                                                {% for entity in listEmployee %}
+
+                                                    <option value="{{ entity.id }}" selected>{{ entity.nom }} {{ entity.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                    <label class="col-12 col-sm-3 col-form-label text-sm-right">Nombre d'heures </label>
+                                    <div class="col-12 col-sm-8 col-lg-6">
+                                        <input required="" type="number" id="nbJours" name="nbJours"
+                                               min="1" max="6" placeholder="" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-right">
+                                    <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                        <input type="submit" class="btn btn-space btn-primary" value="Ajouter"></input>
+                                        <input type="reset" class="btn btn-space btn-secondary" value="Annuler"></input>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end valifation types -->
+                <!-- ============================================================== -->
+            </div>
+
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- end main wrapper -->
+<!-- ============================================================== -->
+<!-- Optional JavaScript -->
+<script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('Design/assets/vendor/parsley/parsley.js') }}"></script>
+<script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+<script>
+    $('#form').parsley();
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</body>
+{% endblock %}

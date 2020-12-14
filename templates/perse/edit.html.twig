@@ -1,0 +1,254 @@
+{% extends 'base.html.twig' %}
+
+
+
+
+{% block head %}
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Gestion Perse </title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ asset('Design/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+        <link href="{{ asset('Design//assets/vendor/fonts/circular-std/style.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('Design/assets/libs/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('Design/assets/vendor/fonts/fontawesome/css/fontawesome-all.css') }}">
+    </head>
+{% endblock %}
+{% block body %}
+    <body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        {% block leftbar %}
+            {{ parent() }}
+        {% endblock %}
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+        <div class="dashboard-wrapper">
+            <div class="container-fluid  dashboard-content">
+                <!-- ============================================================== -->
+                <!-- pageheader -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end pageheader -->
+                <!-- ============================================================== -->
+
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- validation form -->
+                    <!-- ============================================================== -->
+
+                    <!-- ============================================================== -->
+                    <!-- end validation form -->
+                    <!-- ============================================================== -->
+                </div>
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- basic form -->
+                    <!-- ============================================================== -->
+
+                    <!-- ============================================================== -->
+                    <!-- end basic form -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- horizontal form -->
+                    <!-- ============================================================== -->
+
+                    <!-- ============================================================== -->
+                    <!-- end horizontal form -->
+                    <!-- ============================================================== -->
+                </div>
+                <div class="row">
+                    <!-- ============================================================== -->
+                    <!-- valifation types -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
+                        <div class="card">
+                            <h5 class="card-header">Gestion Perse </h5>
+                            <div class="card-body">
+                                <form id="validationform" data-parsley-validate="" novalidate="" method="post"
+                                      action="{{ path('editPerse',{'id' : id}) }}">
+                                    <div class="form-group row">
+                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Num° Gare</label>
+                                        <div class="col-12 col-sm-8 col-lg-6">
+                                            <input required="" type="text" id="numeroPerse" name="numeroPerse"
+                                                   placeholder="" value="{{ numeroPerse }}" class="form-control">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Note</label>
+                                        <div class="col-12 col-sm-8 col-lg-6">
+                                            <input required="" type="text" id="note" name="note"
+                                                   placeholder="" class="form-control" value="{{ note }}">
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row">
+
+                                        <label class="col-12 col-sm-3 col-form-label text-sm-right">Par</label>
+                                        <div class="col-12 col-sm-8 col-lg-6">
+
+                                            <select class="form-control" id="input-select"  disabled>
+                                                {% for entity in listEmployee %}
+
+                                                    <option name="idEmployee" id="idEmployee" value="{{ entity.id }}" selected>{{ entity.nom }} {{ entity.prenom }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row text-right">
+                                        <div class="col col-sm-10 col-lg-9 offset-sm-1 offset-lg-0">
+                                            <input type="submit" class="btn btn-space btn-primary" value="Modifier"></input>
+                                            <input type="reset" class="btn btn-space btn-secondary" value="Annuler"></input>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- end valifation types -->
+                    <!-- ============================================================== -->
+
+                    <div class="col-xl-7 col-lg-7 col-md-9 col-sm-7 col-7" id="entitiesNav">
+                        <div class="card">
+                            <br><br>
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                            <h5 class="card-header">La Liste des PERSES </h5>
+
+                            <div class="card-body p-0">
+
+                                <div class="table-responsive" >
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                        <tr class="border border-left-0">
+                                            <th class="border border-left-0">#</th>
+
+                                            <th class="border border-left-0">Num</th>
+                                            <th class="border border-left-0">Note</th>
+                                            <th class="border border-left-0">Date</th>
+
+                                            <th>
+                                                Actions
+                                            <td>
+
+                                                <div class="dropdown float-right">
+                                                    <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
+
+                                                    </a>
+
+                                                    <div class="dropdown-menu dropdown-menu-right">
+
+                                                        <a href="{{ path('PDF') }}" class="dropdown-item" >Export Rapport</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                        </thead>
+
+                                        {%for entity in list%}
+                                            <tbody>
+                                            <td>{{ entity.id }}</td>
+                                            <td>{{ entity.numPerse }}</td>
+                                            <td>{{ entity.note }}</td>
+                                            <td>{{ entity.datePerse  | date('d/m/Y H:i:s') }}</td>
+                                            <td><a href="{{ path('editPerse',{id: entity.id}) }}"> Modifier</a></td>
+                                            <td><a onclick="return confirm('Etes-vous sûr de supprimer cet perse?')" href="{{ path('suppPerse',{id:entity.id}) }}"> Supprimer</a></td>
+
+                                            </tbody>
+                                        {% else %}
+                                            <h3>Le tableau est vide</h3>
+                                        {% endfor %}
+
+                                        {% else %}
+                                            <center><div>
+                                                    <p> Vous n'est pas encore connecté !! </p>
+                                                    <a style="color: #0a3c93; font-weight: bold" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                                </div> </center>
+                                        {% endif %}
+
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- footer -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- end footer -->
+        <!-- ============================================================== -->
+    </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('Design/assets/vendor/parsley/parsley.js') }}"></script>
+    <script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+    <script>
+        $('#form').parsley();
+    </script>
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    </body>
+{% endblock %}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Rapport</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Lobster|Kreon:400,700' rel='stylesheet' type='text/css'>
+
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="{{ absolute_url ( asset('PDF/images/icons/favicon.ico')) }}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/vendor/bootstrap/css/bootstrap.min.css')) }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/fonts/font-awesome-4.7.0/css/font-awesome.min.css')) }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/vendor/animate/animate.css')) }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/vendor/select2/select2.min.css')) }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/vendor/perfect-scrollbar/perfect-scrollbar.css')) }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/css/util.css')) }}">
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url ( asset('PDF/css/main.css')) }}">
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<div class="limiter">
+    <div class="container-table100"  style="border-radius: 5px; border-top-left-radius: 5px; border-bottom-right-radius: 5px">
+        <div class="wrap-table100" >
+            <div class="table100 ver1 m-b-110">
+                <div class="table100-head" >
+                    <table>
+                        <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column1">Nom et prénom</th>
+                            <th class="cell100 column2">Société</th>
+                            <th class="cell100 column3">Présent</th>
+                            <th class="cell100 column4">Retard</th>
+                            <th class="cell100 column5">Poste</th>
+                            <th class="cell100 column6">Matricule</th>
+                            <th class="cell100 column7">COD</th>
+                            <th class="cell100 column8">T</th>
+                            <th class="cell100 column9">Positionnement</th>
+
+
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="table100-body js-pscroll">
+                    <table>
+                        {%for entity in list%}
+                        <tbody>
+                        <tr class="row100 body" style="color: #0f0f0f">
+                            <td class="cell100 column1">{{entity.nom}} {{entity.prenom}} </td>
+                            <td class="cell100 column2">{{entity.societe}}</td>
+                            <td class="cell100 column3">{{ entity.present }}</td>
+                            <td class="cell100 column4">{{ entity.retard }}</td>
+                            <td class="cell100 column5">{{entity.poste}}</td>
+                            <td class="cell100 column5">{{entity.matricule}}</td>
+                            <td class="cell100 column7">{{entity.code}}</td>
+                            <td class="cell100 column8">{{entity.t}} </td>
+                            <td class="cell100 column9">{{entity.idPositionnement}}</td>
+                        </tr>
+{% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!--===============================================================================================-->
+
+</body>
+</html>
