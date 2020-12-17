@@ -224,10 +224,24 @@ class CalculRepository extends ServiceEntityRepository
 
         $query= $this->getEntityManager()
             ->createQuery("
-            SELECT e.nom as nom , e.prenom as prenom , c.nbJours as nbConge 
-            FROM App:Conge c , App:Employee e
-            WHERE c.idClient=e.id
-            GROUP BY c.idClient");
+            SELECT e.nom as nom , e.username as prenom , c.nbJours as nbConge 
+            FROM App:Conge c , App:User e
+            WHERE c.idUser=e.id
+            ");
+        $res = $query->getResult();
+        return $res;
+    }
+
+
+    public function soldeQueryByUser($id){
+
+        $query= $this->getEntityManager()
+            ->createQuery("
+            SELECT e.nom as nom , e.username as prenom , c.nbJours as nbConge 
+            FROM App:Conge c , App:User e
+            WHERE c.idUser=e.id
+            AND e.id = $id
+            ");
         $res = $query->getResult();
         return $res;
     }

@@ -116,16 +116,21 @@ class PerseController extends Controller
     public function admin()
     {
         $currentdate = new \DateTime('now');
+        $em = $this->getDoctrine()->getManager();
 
+        //recuperer l id user
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $user=$em->getRepository(User::class)->find($usr);
         /// $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
 
 
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
         $list = $this->getDoctrine()->getRepository(Perse::class)->perseGroupedByUser();
 
-        $listByUser = $this->getDoctrine()->getRepository(Perse::class)->listByUser();
+        $listByUser = $this->getDoctrine()->getRepository(Perse::class)->listByUser($usr);
+        $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay($currentdate);
 
-
+        var_dump($totalPerDay[0]["total"]);
 
         return $this->render('perse/index.html.twig', array(
 
@@ -133,7 +138,8 @@ class PerseController extends Controller
             'listByUser'=>$listByUser,
             'notifications'=>"test",
             'list' => $list ,
-            'currentDate'=>$currentdate));
+            'currentDate'=>$currentdate,
+            'totalPerDay'=>$totalPerDay[0]["total"]));
 
     }
 

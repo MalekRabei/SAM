@@ -47,4 +47,30 @@ class CongeRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function congeByUser($id){
+
+        $query= $this->getEntityManager()
+            ->createQuery("
+            SELECT c.id as id, e.username as prenom , c.nbJours as nbConge , c.etat as etat, 
+            c.dateDebut as dateDebut , c.dateFin as dateFin
+            FROM App:Conge c , App:User e
+            WHERE c.idUser=e.id
+            AND e.id = $id
+            ");
+        $res = $query->getResult();
+        return $res;
+    }
+    public function congeList(){
+
+        $query= $this->getEntityManager()
+            ->createQuery("
+            SELECT c.id as id, e.username as prenom , c.nbJours as nbConge , c.etat as etat, 
+            c.dateDebut as dateDebut , c.dateFin as dateFin
+            FROM App:Conge c , App:User e
+            WHERE c.idUser=e.id
+
+            ");
+        $res = $query->getResult();
+        return $res;
+    }
 }

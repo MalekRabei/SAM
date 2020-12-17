@@ -1,7 +1,207 @@
-{% extends "base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}SAMBundle:Perse:Valider{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Perse:Valider page</h1>
+    <body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+    <div class="dashboard-main-wrapper">
+
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        {% block leftbar %}
+            {{ parent() }}
+        {% endblock %}
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+
+        <div class="dashboard-wrapper">
+
+            <div class="dashboard-ecommerce">
+
+                <!-- ============================================================== -->
+                <!-- end pageheader  -->
+                <!-- ============================================================== -->
+
+
+
+                <div class="row">
+                    <!-- ============================================================== -->
+
+                    <!-- ============================================================== -->
+
+                    <!-- recent orders  -->
+                    <!-- ============================================================== -->
+                    <div class="col-xl-12 col-lg-12 col-md-9 col-sm-12 col-12" id="entitiesNav">
+                        <div class="card">
+                            <br><br>
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                            <h5 class="card-header">La Liste des Autorisations</h5>
+
+                            <div class="card-body p-0">
+
+                                <div class="table-responsive" >
+                                    <table class="table">
+                                        <thead class="bg-light">
+                                        <tr class="border border-left-0">
+                                            <th class="border border-left-0">#</th>
+
+                                            <th class="border border-left-0">Nom & Motif</th>
+                                            <th class="border border-left-0">Nombre d'heure</th>
+
+                                            <th class="border border-left-0">Date</th>
+                                            <th class="border border-left-0">Etat</th>
+
+                                            <th>
+                                                Actions
+                                            <td>
+                                                <div class="dropdown float-right">
+                                                    <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
+
+                                                    </a>
+
+                                                    <div class="dropdown-menu dropdown-menu-right">
+
+                                                        <a href="{{ path('PDF') }}" class="dropdown-item" >Export Rapport</a>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            </th>
+                                            <th></th>
+
+                                        </tr>
+                                        </thead>
+
+
+                                        <tbody>
+                                        {%for entity in list%}
+                                        <tr>
+
+                                            <td> {{ entity.id }}</td>
+                                            <td> {{ entity.motif }} </td>
+                                            <td>{{ entity.nbHeure }}</td>
+                                            <td>{{ entity.dateAutorisation | date('d/m/Y H:i:s') }}</td>
+                                            <td>{{ entity.etat }}</td>
+                                            <td><a href="{{ path('editAutorisation',{id: entity.id}) }}"> Modifier</a></td>
+                                            <td><a onclick="return confirm('Etes-vous sûr de supprimer cette autorisation?')" href="{{ path('suppAutorisation',{id:entity.id}) }}"> Supprimer</a></td>
+
+                                        </tr>
+                                        </tbody>
+                                        {% else %}
+                                            <h3>Le tableau est vide</h3>
+                                        {% endfor %}
+
+                                        {% else %}
+                                            <center><div>
+                                                    <p> Vous n'est pas encore connecté !! </p>
+                                                    <a style="color: #0a3c93; font-weight: bold" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                                </div> </center>
+                                        {% endif %}
+
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- customer acquistion  -->
+                <!-- ============================================================== -->
+
+                <!-- ============================================================== -->
+                <!-- end customer acquistion  -->
+                <!--
+                            <!-- ============================================================== -->
+                <!-- end recent orders  -->
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- end navbar -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- left sidebar -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- end left sidebar -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- wrapper  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            {% block footer %}
+                {{ parent() }}
+            {% endblock %}
+            <!-- ============================================================== -->
+            <!-- end footer -->
+            <!-- ============================================================== -->
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- end wrapper  -->
+        <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+    {% block javascripts %}
+
+        <script src="{{ asset('Design/assets/vendor/jquery/jquery-3.3.1.min.js') }}"></script>
+        <!-- bootstap bundle js -->
+        <script src="{{ asset('Design/assets/vendor/bootstrap/js/bootstrap.bundle.js') }}"></script>
+        <!-- slimscroll js -->
+        <script src="{{ asset('Design/assets/vendor/slimscroll/jquery.slimscroll.js') }}"></script>
+        <!-- main js -->
+        <script src="{{ asset('Design/assets/libs/js/main-js.js') }}"></script>
+        <!-- chart chartist js -->
+        <script src="{{ asset('Design/assets/vendor/charts/chartist-bundle/chartist.min.js') }}"></script>
+        <!-- sparkline js -->
+        <script src="{{ asset('Design/assets/vendor/charts/sparkline/jquery.sparkline.js') }}"></script>
+        <!-- morris js -->
+        <script src="{{ asset('Design/assets/vendor/charts/morris-bundle/raphael.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/morris-bundle/morris.js') }}"></script>
+        <!-- chart c3 js -->
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/c3.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/d3-5.4.0.min.js') }}"></script>
+        <script src="{{ asset('Design/assets/vendor/charts/c3charts/C3chartjs.js') }}"></script>
+        <script src="{{ asset('Design/assets/libs/js/dashboard-ecommerce.js') }}"></script>
+
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+
+    {% endblock %}
+
+    </body>
 {% endblock %}
+

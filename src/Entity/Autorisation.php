@@ -43,11 +43,11 @@ class Autorisation implements NotifiableInterface
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumn(name="idEmployee",referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="idUser",referencedColumnName="id")
      *
      */
-    private $idEmployee;
+    private $idUser;
 
 
     public function getId(): ?int
@@ -106,16 +106,17 @@ class Autorisation implements NotifiableInterface
     /**
      * @return mixed
      */
-    public function getIdEmployee()
+    public function getIdUser()
     {
-        return $this->idEmployee;
+        return $this->idUser;
     }
 
     /**
-     * @param mixed $idEmployee
+     * @param mixed $idUser
      */
-    public function setIdEmployee($idEmployee): void
+    public function setIdUser($idUser): void
     {
-        $this->idEmployee = $idEmployee;
+        $this->idUser = $idUser;
     }
+
 }

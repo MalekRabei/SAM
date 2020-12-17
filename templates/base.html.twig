@@ -220,14 +220,15 @@
                                         <ul class="nav flex-column">
 
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Ajouter un Congé</a>
+                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Gestion Congé</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('listConge') }}">Liste de congés</a>
+                                                <a class="nav-link" href="{{ path('indexConge') }}">Liste des Congés</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('soldeConge') }}">Solde</a>
+                                                <a class="nav-link" href="{{ path('listConge') }}">Calendrier de congés</a>
                                             </li>
+
                                         </ul>
                                     </div>
                                 </li>
@@ -236,13 +237,13 @@
                                         <i class="fa fa-fw fa-check-circle"></i>Les Autorisations</a>
                                     <div id="submenu-6" class="collapse submenu" style="">
                                         <ul class="nav flex-column">
-
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Gestion autorisation</a>
+                                            </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ path('listAutorisation') }}">Liste des autorisation</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Ajouter une autorisation</a>
-                                            </li>
+
                                             <li class="nav-item">
                                                 <a class="nav-link" href=""></a>
                                             </li>
@@ -258,6 +259,10 @@
                                             <li class="nav-item">
                                                 <a class="nav-link" href="{{ path('ajoutPerse') }}">Gestion Perse</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ path('listPerse') }}">Liste des Perses</a>
+                                            </li>
+
 
                                         </ul>
                                     </div>
@@ -330,14 +335,10 @@
                                         <ul class="nav flex-column">
 
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Ajouter un Congé</a>
+                                                <a class="nav-link" href="{{ path('ajoutConge') }}">Gestion Congé</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('listConge') }}">Liste de congés</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('soldeConge') }}">Solde</a>
-                                            </li>
+
+
                                         </ul>
                                     </div>
                                 </li>
@@ -348,10 +349,7 @@
                                         <ul class="nav flex-column">
 
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('listAutorisation') }}">Liste des autorisation</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Ajouter une autorisation</a>
+                                                <a class="nav-link" href="{{ path('demandeAutorisation') }}">Gestion autorisation</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link" href=""></a>

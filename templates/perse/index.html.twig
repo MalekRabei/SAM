@@ -134,10 +134,11 @@
                                             <tbody>
                                             <td>{{ entity.username }}</td>
                                             <td>{{ entity.total}}</td>
-                                            <td>{{ entity.date  | date('d/m/Y H:i:s') }}</td>
+                                            <td>{{ entity.date  | date('d/m/Y') }}</td>
                                             <td><a href=""> Liste </a></td>
 
                                             </tbody>
+
                                         {% else %}
                                             <h3>Le tableau est vide</h3>
                                         {% endfor %}
@@ -150,6 +151,7 @@
                                         {% endif %}
 
                                     </table>
+                                    <h5>Total de jours {{ totalPerDay }}  </h5>
 
 
                                 </div>
@@ -206,8 +208,9 @@
                                             <td>{{ entity.username }}</td>
                                             <td>{{ entity.note}}</td>
                                             <td>{{ entity.id}}</td>
-                                            <td>{{ entity.date  | date('d/m/Y H:i:s') }}</td>
+                                            <td>{{ entity.datePerse  | date('d/m/Y H:i:s') }}</td>
                                             <td><a href=""> Liste </a></td>
+
 
                                             </tbody>
                                         {% else %}

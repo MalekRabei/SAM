@@ -70,7 +70,7 @@
                 <!-- ============================================================== -->
                 <!-- valifation types -->
                 <!-- ============================================================== -->
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                     <div class="card">
                         <h5 class="card-header">Demande Autorisation </h5>
                         <div class="card-body">
@@ -88,12 +88,11 @@
                                     <label class="col-12 col-sm-3 col-form-label text-sm-right">Nom</label>
                                     <div class="col-12 col-sm-8 col-lg-6">
 
-                                            <select class="form-control" id="input-select" name="idEmployee">
-                                                {% for entity in listEmployee %}
+                                        <input required="" type="text" id="nomEmployee" name="nomEmployee" value="{{ app.user.username}}"
+                                               placeholder="" class="form-control" disabled>
 
-                                                    <option value="{{ entity.id }}" selected>{{ entity.nom }} {{ entity.prenom }}</option>
-                                                {% endfor %}
-                                            </select>
+                                        <input required="" type="text" id="idEmployee" name="idEmployee" value="{{ app.user.id}}"
+                                               placeholder="" class="form-control" hidden disabled>
 
                                     </div>
                                 </div>
@@ -118,6 +117,82 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7" >
+                    <div class="card">
+                        <br><br>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+
+                        <h5 class="card-header">La Liste des Autorisations</h5>
+
+                        <div class="card-body p-0">
+
+                            <div class="table-responsive" >
+                                <table class="table">
+                                    <thead class="bg-light">
+                                    <tr class="border border-left-0">
+                                        <th class="border border-left-0">#</th>
+
+                                        <th class="border border-left-0">Nom & Motif</th>
+                                        <th class="border border-left-0">Nombre d'heure</th>
+
+                                        <th class="border border-left-0">Date</th>
+                                        <th class="border border-left-0">Etat</th>
+
+                                        <th>
+                                            Actions
+                                        <td>
+                                            <div class="dropdown float-right">
+                                                <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
+
+                                                </a>
+
+                                                <div class="dropdown-menu dropdown-menu-right">
+
+                                                    <a href="{{ path('PDF') }}" class="dropdown-item" >Export Rapport</a>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        </th>
+                                        <th></th>
+
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    {%for entity in list%}
+                                    <tr>
+
+                                        <td> {{ entity.id }}</td>
+                                        <td> {{ entity.motif }} </td>
+                                        <td>{{ entity.nbHeure }}</td>
+                                        <td>{{ entity.dateAutorisation | date('d/m/Y H:i:s') }}</td>
+                                        <td>{{ entity.etat }}</td>
+                                        <td><a href="{{ path('editAutorisation',{id: entity.id}) }}"> Modifier</a></td>
+                                        <td><a onclick="return confirm('Etes-vous sûr de supprimer cette autorisation?')" href="{{ path('suppAutorisation',{id:entity.id}) }}"> Supprimer</a></td>
+
+                                    </tr>
+                                    </tbody>
+                                    {% else %}
+                                        <h3>Le tableau est vide</h3>
+                                    {% endfor %}
+
+                                    {% else %}
+                                        <center><div>
+                                                <p> Vous n'est pas encore connecté !! </p>
+                                                <a style="color: #0a3c93; font-weight: bold" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                                            </div> </center>
+                                    {% endif %}
+
+                                </table>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ============================================================== -->
                 <!-- end valifation types -->
                 <!-- ============================================================== -->

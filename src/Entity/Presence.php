@@ -38,11 +38,11 @@ class Presence
     private $dateRetard;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Employee")
-     * @ORM\JoinColumn(name="idEmployee",referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="idUser",referencedColumnName="id")
      *
      */
-    private $idEmployee;
+    private $idUser;
 
     public function getId(): ?int
     {
@@ -86,21 +86,7 @@ class Presence
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIdEmployee()
-    {
-        return $this->idEmployee;
-    }
 
-    /**
-     * @param mixed $idEmployee
-     */
-    public function setIdEmployee($idEmployee): void
-    {
-        $this->idEmployee = $idEmployee;
-    }
 
     /**
      * @return mixed
@@ -116,5 +102,21 @@ class Presence
     public function setDatePresence($datePresence): void
     {
         $this->datePresence = $datePresence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * @param mixed $idUser
+     */
+    public function setIdUser($idUser): void
+    {
+        $this->idUser = $idUser;
     }
 }

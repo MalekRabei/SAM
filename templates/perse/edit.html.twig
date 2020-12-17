@@ -110,13 +110,11 @@
 
                                         <label class="col-12 col-sm-3 col-form-label text-sm-right">Par</label>
                                         <div class="col-12 col-sm-8 col-lg-6">
+                                            <input required="" type="text" id="nomEmployee" name="nomEmployee" value="{{ app.user.username}}"
+                                                   placeholder="" class="form-control" disabled>
 
-                                            <select class="form-control" id="input-select"  disabled>
-                                                {% for entity in listEmployee %}
-
-                                                    <option name="idEmployee" id="idEmployee" value="{{ entity.id }}" selected>{{ entity.nom }} {{ entity.prenom }}</option>
-                                                {% endfor %}
-                                            </select>
+                                            <input required="" type="text" id="idEmployee" name="idEmployee" value="{{ app.user.id}}"
+                                                   placeholder="" class="form-control" hidden disabled>
 
                                         </div>
                                     </div>

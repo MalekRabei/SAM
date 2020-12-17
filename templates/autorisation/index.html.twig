@@ -102,7 +102,9 @@
                                         <td>{{ entity.dateAutorisation | date('d/m/Y H:i:s') }}</td>
                                         <td>{{ entity.etat }}</td>
                                         <td><a href="{{ path('editAutorisation',{id: entity.id}) }}"> Modifier</a></td>
+
                                         <td><a onclick="return confirm('Etes-vous sûr de supprimer cette autorisation?')" href="{{ path('suppAutorisation',{id:entity.id}) }}"> Supprimer</a></td>
+                                        <td><a onclick="return confirm('Etes-vous sûr de valider cette autorisation?')" href="{{ path('validerAutorisation',{id:entity.id}) }}"> Valider</a></td>
 
                                     </tr>
                                     </tbody>

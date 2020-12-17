@@ -43,13 +43,22 @@ suppConge:
   path:     /suppConge/{id}
   defaults: { _controller: App\Controller\CongeController::suppConge }
 
+validerConge:
+  path:     /admin/conge/{id}
+  defaults: { _controller: App\Controller\CongeController::valider }
+
 listConge:
-  path:     /listConge
+  path:     /admin/listConge
   defaults: { _controller: App\Controller\CongeController::listConge }
 
 soldeConge:
-  path:     /soldeConge
-  defaults: { _controller: App\Controller\EmployeeController::soldeConge }
+  path:     /admin/soldeConge
+  defaults: { _controller: App\Controller\CongeController::soldeConge }
+
+indexConge:
+  path:     /admin/conge/list
+  defaults: { _controller: App\Controller\CongeController::index }
+
 
 search:
   path:     /search
@@ -63,10 +72,18 @@ demandeAutorisation:
   path:     /autorisation/demande
   defaults: { _controller: App\Controller\AutorisationController::new }
 
+demandeAutorisationAdmin:
+  path:     /admin/autorisation/demande
+  defaults: { _controller: App\Controller\AutorisationController::adminNew }
+
 
 editAutorisation:
   path:     /autorisation/modifier/{id}
   defaults: { _controller: App\Controller\AutorisationController::update }
+
+editAutorisationAdmin:
+  path:     /admin/autorisation/modifier/{id}
+  defaults: { _controller: App\Controller\AutorisationController::adminUpdate }
 
 showAutorisation:
   path:     /autorisation/details
@@ -79,6 +96,10 @@ listAutorisation:
 suppAutorisation:
   path:     /autorisation/supp/{id}
   defaults: { _controller: App\Controller\AutorisationController::delete}
+
+validerAutorisation:
+  path:     /admin/autorisation/valider/{id}
+  defaults: { _controller: App\Controller\AutorisationController::valider}
 
 
 ajoutPerse:

@@ -53,13 +53,22 @@ class PerseRepository extends ServiceEntityRepository
         return $this->getEntityManager()
             ->createQuery("SELECT COUNT(perse.id) as total, user.username as username, perse.datePerse as date 
               FROM App:Perse perse ,App:User user
+              where perse.idEmployee = user.id
                 GROUP BY perse.idEmployee")
             ->getResult();
     }
-
+    public function TotalPersePerDay($currentDate){
+       // $currentdate = new \DateTime();
+        $currentdateS=$currentDate->format('Y-m-d');
+        return $this->getEntityManager()
+            ->createQuery("SELECT COUNT(perse.id) as total, perse.datePerse as date 
+              FROM App:Perse perse 
+              WHERE perse.datePerse = '$currentdateS/^' ")
+            ->getResult();
+    }
     public function  listByUser($id){
         return $this->getEntityManager()
-            ->createQuery("SELECT perse.id as id ,perse.note as note, user.username as username, perse.numPerse as numPerse, 
+            ->createQuery("SELECT COUNT(perse.id) as total,perse.id as id ,perse.note as note, user.username as username, perse.numPerse as numPerse, 
             perse.datePerse as datePerse
               FROM App:Perse perse ,App:User user
               WHERE perse.idEmployee = $id

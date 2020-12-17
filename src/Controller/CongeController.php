@@ -6,6 +6,7 @@ use App\Entity\Calcul;
 use App\Entity\Conge;
 use App\Entity\Employee;
 use App\Entity\Presence;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +19,14 @@ class CongeController extends AbstractController
      */
     public function index(): Response
     {
+        $currentdate = new \DateTime('now');
+
+        $congelist = $this->getDoctrine()->getRepository(Conge::class)
+            ->congeList();
         return $this->render('conge/index.html.twig', [
-            'controller_name' => 'CongeController',
+            'list'=>$congelist,
+            'currentDate'=>$currentdate,
+            'notifications'=>'test'
         ]);
     }
     /*************************** Gestion Congé***************************/
@@ -27,28 +34,28 @@ class CongeController extends AbstractController
     public function ajoutConge(Request $request)
     {
         $conge = new Conge();
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+
         if (isset($_POST['motif'])) {
             $motif = $_POST['motif'];
             $dateDebut = $_POST['dateDebut'];
             $dateFin = $_POST['dateFin'];
             $nbJours = $_POST['nbJours'];
-            $idClient = $_POST['idEmployee'];
-            $id = intval($idClient);
-            $employee = $this->getDoctrine()->getRepository(Employee::class)->find($id);
+           // $idClient = $_POST['idEmployee'];
+            // $id = intval($idClient);
 
 
             $em = $this->getDoctrine()->getManager();
 
             //recuperer l id user
-            // $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-            // $user=$em->getRepository('UserBundle:User')->find($usr);
+             $user=$em->getRepository(User::class)->find($usr);
 
-            $conge->setMotif($employee->getNom()." ".$employee->getPrenom()." ".$motif);
+            $conge->setMotif($user->getUsername()."  ".$motif);
             $conge->setDateDebut(new \DateTime($_POST['dateDebut']));
             $conge->setDateFin(new \DateTime($_POST['dateFin']));
             $conge->setNbJours($nbJours);
             $conge->setEtat('Non validé');
-            $conge->setIdEmployee($employee);
+            $conge->setIdUser($user);
 
 
             $em->persist($conge);
@@ -58,12 +65,21 @@ class CongeController extends AbstractController
         }
       //  $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
+        $solde = $this->getDoctrine()->getRepository(Calcul::class)
+            ->soldeQueryByUser($usr);
+        $congelist = $this->getDoctrine()->getRepository(Conge::class)
+            ->congeByUser($usr);
+
 
         $currentdate = new \DateTime('now');
         return $this->render('conge/ajoutConge.html.twig', array(
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
-            'currentDate'=>$currentdate));
+            'solde'=>$solde,
+            'currentDate'=>$currentdate,
+            'list'=>$congelist
+            )
+            );
 
 
     }
@@ -73,8 +89,8 @@ class CongeController extends AbstractController
         //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $em = $this->getDoctrine()->getManager();
         //recuperer l id user
-        //$usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-        // $user=$em->getRepository('UserBundle:User')->find($usr);
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+         $user=$em->getRepository(User::class)->find($usr);
         //recuper le conge
         $conge = $this->getDoctrine()->getRepository(Conge::class)->find($id);
 
@@ -82,22 +98,22 @@ class CongeController extends AbstractController
         $dtDebutA = $conge->getDateDebut();
         $dtFinA = $conge->getDateFin();
         $nbJoursA = $conge->getNbJours();
-        $idClientA = $conge->getIdClient();
+        $idClientA = $conge->getIdUser();
         if (isset($_POST['motif'])) {
             //recuperer la saisie
             $motif = $_POST['motif'];
             $dateDebut = $_POST['dateDebut'];
             $dateFin = $_POST['dateFin'];
             $nbJours = $_POST['nbJours'];
-            $idClient = $_POST['idEmployee'];
-            $id = intval($idClient);
+           // $idClient = $_POST['idEmployee'];
+           // $id = intval($idClient);
             $employee = $this->getDoctrine()->getRepository(Employee::class)->find($id);
             //MAJ nouvelles entrées
-            $conge->setMotif($motif);
+            $conge->setMotif($user->getUsername()."  ".$motif);
             $conge->setDateDebut(new \DateTime($_POST['dateDebut']));
             $conge->setDateFin(new \DateTime($_POST['dateFin']));
             $conge->setNbJours($nbJours);
-            $conge->setIdClient($employee);
+            $conge->setIdUser($user);
 
             $em->persist($conge);
             $em->flush();
@@ -105,6 +121,10 @@ class CongeController extends AbstractController
 
         }
 
+        $solde = $this->getDoctrine()->getRepository(Calcul::class)
+            ->soldeQueryByUser($usr);
+        $congelist = $this->getDoctrine()->getRepository(Conge::class)
+            ->congeByUser($usr);
 
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
         $currentdate = new \DateTime('now');
@@ -116,7 +136,10 @@ class CongeController extends AbstractController
             'dateFin' => $dtFinA,
             'nbJour' => $nbJoursA,
             'notifications'=>"test",
-            'currentDate'=>$currentdate));
+            'solde'=>$solde,
+            'currentDate'=>$currentdate,
+            'list'=>$congelist,
+            'id'=> $conge->getId()));
     }
 
     public function suppConge(Request $request, $id)
@@ -125,7 +148,7 @@ class CongeController extends AbstractController
         $conge = $em->getRepository(Conge::class)->find($id);
         $em->remove($conge);
         $em->flush();
-        return $this->redirectToRoute('listConge');
+        return $this->redirectToRoute('ajoutConge');
 
     }
 
@@ -187,6 +210,19 @@ class CongeController extends AbstractController
                 'Content-Disposition' => 'attachment;pdf_directory/filename"' . $fichier . '.pdf"'
             )
         );
+
+    }
+
+    public function valider(request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $conge = $this->getDoctrine()
+            ->getRepository(Conge::class)->find($id);
+        $conge->setEtat("Validé");
+        $em->persist($conge);
+        $em->flush();
+        return $this->redirectToRoute("listConge");
 
     }
 

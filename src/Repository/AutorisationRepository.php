@@ -47,4 +47,17 @@ class AutorisationRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function autorisationByUser($id){
+
+        $query= $this->getEntityManager()
+            ->createQuery("
+            SELECT c.id as id, e.username as prenom , c.nbHeure as nbHeure , c.etat as etat , c.motif as motif, 
+            c.dateAutorisation as dateAutorisation 
+            FROM App:Autorisation c , App:User e
+            WHERE c.idUser=e.id
+            AND e.id = $id
+            ");
+        $res = $query->getResult();
+        return $res;
+    }
 }

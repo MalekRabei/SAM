@@ -6,6 +6,7 @@ use App\Entity\Autorisation;
 use App\Entity\Calcul;
 use App\Entity\Employee;
 use App\Entity\Poste;
+use App\Entity\User;
 use \Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,16 +32,6 @@ class AutorisationController extends AbstractController
       //  $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $currentdate = new \DateTime('now');
 
-// From your controller or service
-        /*$data = array(
-            'my-message' => "My custom message",
-        );
-        $pusher = $this->get('mrad.pusher.notificaitons');
-        $channel = 'messages';
-        $pusher->trigger($data, $channel);
-
-// or you can keep the channel pram empty and will be broadcasted on "notifications" channel by default
-        $pusher->trigger($data);*/
 
 
         $poste= $this->getDoctrine()->getRepository(Poste::class)->posteQuery();
@@ -55,27 +46,25 @@ class AutorisationController extends AbstractController
     }
 
     public function new()
-    { $currentdate = new \DateTime('now');
+    {   $currentdate = new \DateTime('now');
         $autorisation = new Autorisation();
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+
         if (isset($_POST['motif'])) {
             $motif = $_POST['motif'];
 
             $nbHeure = $_POST['nbJours'];
-            $idEmployee = $_POST['idEmployee'];
-            $id = intval($idEmployee);
-            $employee = $this->getDoctrine()->getRepository(Employee::class)->find($id);
 
 
             $em = $this->getDoctrine()->getManager();
 
             //recuperer l id user
-            // $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-            // $user=$em->getRepository('UserBundle:User')->find($usr);
+             $user=$em->getRepository(User::class)->find($usr);
 
-            $autorisation->setMotif($employee->getNom()." ".$employee->getPrenom()." ".$motif);
+            $autorisation->setMotif($user->getUsername()."  ".$motif);
             $autorisation->setDateAutorisation($currentdate);
             $autorisation->setNbHeure($nbHeure);
-            $autorisation->setIdEmployee($employee);
+            $autorisation->setIdUser($user);
             $autorisation->setEtat('Non validé');
 
             $em->persist($autorisation);
@@ -86,52 +75,92 @@ class AutorisationController extends AbstractController
         //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
 
+        $list = $this->getDoctrine()->getRepository(Autorisation::class)->autorisationByUser($usr);
 
         return $this->render('autorisation/new.html.twig', array(
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
-            'currentDate'=>$currentdate));
-
-
+            'currentDate'=>$currentdate,
+            'list'=>$list ));
     }
 
 
-    public function update(Request $request, $id)
-    {
-        $currentdate = new \DateTime('now');
-        $em = $this->getDoctrine()->getManager();
-        $autorisation = $this->getDoctrine()->getRepository(Autorisation::class)->find($id);
-
-        $motifA = $autorisation->getMotif();
-        $nbHeureA= $autorisation->getNbHeure();
-        $dateDebut= $autorisation->getDateAutorisation();
-        $idEmployee= $autorisation->getIdEmployee();
-
+    public function adminNew()
+    {   $currentdate = new \DateTime('now');
+        $autorisation = new Autorisation();
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         if (isset($_POST['motif'])) {
             $motif = $_POST['motif'];
-            $nbHeure = $_POST['nbJours'];
-           // $idEmployee = $_POST['idEmployee'];
-            //$id = intval($idEmployee);
-            $employee = $this->getDoctrine()->getRepository(Employee::class)->find($id);
 
+            $nbHeure = $_POST['nbJours'];
+
+
+            $em = $this->getDoctrine()->getManager();
 
             //recuperer l id user
-            // $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-            // $user=$em->getRepository('UserBundle:User')->find($usr);
+            $user=$em->getRepository(User::class)->find($usr);
 
-            $autorisation->setMotif($employee->getNom()." ".$employee->getPrenom()." ".$motif);
+            $autorisation->setMotif($user->getUsername()."  ".$motif);
             $autorisation->setDateAutorisation($currentdate);
             $autorisation->setNbHeure($nbHeure);
-            $autorisation->setIdEmployee($employee);
+            $autorisation->setIdUser($user);
+            $autorisation->setEtat('Non validé');
 
             $em->persist($autorisation);
             $em->flush();
             return $this->redirectToRoute("listAutorisation");
 
         }
+        //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
+        $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
+
+        $list = $this->getDoctrine()->getRepository(Autorisation::class)->findAll();
+
+        return $this->render('autorisation/new.html.twig', array(
+            'listEmployee' => $listEmployee,
+            'notifications'=>"test",
+            'currentDate'=>$currentdate,
+            'list'=>$list ));
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        $currentdate = new \DateTime('now');
+        $em = $this->getDoctrine()->getManager();
+
+        //recuperer l id user
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $autorisation = $this->getDoctrine()->getRepository(Autorisation::class)->find($id);
+
+        $motifA = $autorisation->getMotif();
+        $nbHeureA= $autorisation->getNbHeure();
+        $dateDebut= $autorisation->getDateAutorisation();
+        $idEmployee= $autorisation->getIdUser();
+
+
+        if (isset($_POST['motif'])) {
+            $motif = $_POST['motif'];
+            $nbHeure = $_POST['nbJours'];
+            $user=$em->getRepository(User::class)->find($usr);
+
+            $autorisation->setMotif($user->getUsername()."".$motif);
+            $autorisation->setDateAutorisation($currentdate);
+            $autorisation->setNbHeure($nbHeure);
+            $autorisation->setIdUser($user);
+
+            $em->persist($autorisation);
+            $em->flush();
+            return $this->redirectToRoute("demandeAutorisation");
+
+        }
        // $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
+        $list = $this->getDoctrine()->getRepository(Autorisation::class)->autorisationByUser($usr);
+
 
 
 
@@ -143,7 +172,59 @@ class AutorisationController extends AbstractController
             'idEmploye'=>$idEmployee,
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
-            'currentDate'=>$currentdate));
+            'currentDate'=>$currentdate,
+            'list'=>$list));
+    }
+
+
+    public function adminUpdate(Request $request, $id)
+    {
+        $currentdate = new \DateTime('now');
+        $em = $this->getDoctrine()->getManager();
+
+        //recuperer l id user
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        $autorisation = $this->getDoctrine()->getRepository(Autorisation::class)->find($id);
+
+        $motifA = $autorisation->getMotif();
+        $nbHeureA= $autorisation->getNbHeure();
+        $dateDebut= $autorisation->getDateAutorisation();
+        $idEmployee= $autorisation->getIdUser();
+
+
+        if (isset($_POST['motif'])) {
+            $motif = $_POST['motif'];
+            $nbHeure = $_POST['nbJours'];
+            $user=$em->getRepository(User::class)->find($usr);
+
+            $autorisation->setMotif($user->getUsername()."".$motif);
+            $autorisation->setDateAutorisation($currentdate);
+            $autorisation->setNbHeure($nbHeure);
+            $autorisation->setIdUser($user);
+
+            $em->persist($autorisation);
+            $em->flush();
+            return $this->redirectToRoute("demandeAutorisation");
+
+        }
+        // $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
+        $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
+        $list = $this->getDoctrine()->getRepository(Autorisation::class)->findAll();
+
+
+
+
+        return $this->render('autorisation/edit.html.twig', array(
+            'id'=>$id,
+            'motif'=>$motifA ,
+            'nbHeure'=> $nbHeureA,
+            'dateDebut'=>$dateDebut,
+            'idEmploye'=>$idEmployee,
+            'listEmployee' => $listEmployee,
+            'notifications'=>"test",
+            'currentDate'=>$currentdate,
+            'list'=>$list));
     }
 
     public function show()
@@ -161,6 +242,19 @@ class AutorisationController extends AbstractController
         $em->remove($autorisation );
         $em->flush();
         return $this->redirectToRoute('listAutorisation');
+    }
+
+    public function valider(request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $autorisation = $this->getDoctrine()
+            ->getRepository(Autorisation::class)->find($id);
+            $autorisation->setEtat("Validé");
+            $em->persist($autorisation);
+            $em->flush();
+            return $this->redirectToRoute("listAutorisation");
+
     }
 
 

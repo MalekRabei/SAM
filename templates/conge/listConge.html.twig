@@ -118,60 +118,38 @@
             <!-- events calendar -->
             <!-- ============================================================== -->
             <div class="row">
-                <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div id='wrap'>
+                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+                                <div id='external-events' >
+                                    <h4>Liste Totale Terna</h4>
+                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
+                                    <div class='fc-event'>Totale maladie 1 </div>
+                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale 0</div>
+                                    <div class='fc-event '>Totale maternité 0</div>
+                                    <div class='fc-event bg-info border-info'>Totale Repos 0</div>
+                                    <div class='fc-event bg-brand border-brand'>Totale 3 </div>
+                                </div>
+                                <div id='external-events' style="margin-top: 50px"  >
+                                    <h4>Liste Totale Shaptek</h4>
+                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
+                                    <div class='fc-event'>Totale maladie 0</div>
+                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale 1</div>
+                                    <div class='fc-event '>Totale maternité  1</div>
+                                    <div class='fc-event bg-info border-info'>Totale Repos 0</div>
+                                    <div class='fc-event bg-brand border-brand'>Totale 2</div>
 
 
-                            <div style="height:600px; width:650px; margin-left: 300px" >
+                                </div>
+                            </div>
+                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+                            <div style="height:800px; width:700px; margin-left: 300px ; margin-top:100px" >
                                     <a style="color: #002752" href="{{ path('ajoutConge') }}"> + Ajouter un congé</a>
                                 {% block Calendar %}
                                     <div id="calendar-holder"></div>
                                 {% endblock %}
                             </div>
-
-
-
-                               <div id='external-events' style="margin-top: -600px; margin-left: 0px">
-                                   <h4>Liste Totale Terna</h4>
-                                   <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
-                                   <div class='fc-event'>Totale maladie 1 </div>
-                                   <div class='fc-event bg-secondary border-secondary'>Totale familiale 0</div>
-                                   <div class='fc-event '>Totale maternité 0</div>
-                                   <div class='fc-event bg-info border-info'>Totale Repos 0</div>
-                                   <div class='fc-event bg-brand border-brand'>Totale 3 </div>
-                               </div>
-
-                               <div id='external-events' style="margin-top: -240px; margin-left: 0px">
-                                   <h4>Liste Totale Shaptek</h4>
-                                   <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
-                                   <div class='fc-event'>Totale maladie 0</div>
-                                   <div class='fc-event bg-secondary border-secondary'>Totale familiale 1</div>
-                                   <div class='fc-event '>Totale maternité  1</div>
-                                   <div class='fc-event bg-info border-info'>Totale Repos 0</div>
-                                   <div class='fc-event bg-brand border-brand'>Totale 2</div>
-
-
-                               </div>
-
-
-
-
-
-
-
-
-
-
-
-                                <div style='clear:both'>
-
-                                </div>
-
-                            </div>
-
-
                         </div>
                     </div>
                 </div>
