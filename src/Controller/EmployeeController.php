@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Employee;
 use App\Entity\Poste;
 use App\Entity\Presence;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,8 +31,9 @@ class EmployeeController extends AbstractController
         $pos= $this->getDoctrine()->getRepository(Poste::class)->posteQuery();
        // var_dump($pos);
         //recuperer l id user
-        // $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-        // $user=$em->getRepository('UserBundle:User')->find($usr);
+         $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+         $user=$em->getRepository(User::class)->find($usr);
+
         $employee = new Employee();
         if (isset($_POST['nom']) || isset($_POST['prenom']) || isset($_POST['poste']) || isset($_POST['matricule'])) {
             //condition d'ajout
@@ -63,10 +65,8 @@ class EmployeeController extends AbstractController
         }
         //left side bar
 
-
         $currentdate = new \DateTime('now');
         return $this->render('employee/ajoutEmployee.html.twig', array(
-
             'notifications'=>"test",
             'currentDate'=>$currentdate,
             'pos'=>$pos));
@@ -169,5 +169,49 @@ class EmployeeController extends AbstractController
             )
         );
 
+    }
+
+    public function presence(){
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $user=$em->getRepository(User::class)->find($usr);
+
+
+        $lastLogin= $this->getDoctrine()->getRepository(Employee::class)->presence($usr);
+
+        $loginTime =  date_format($lastLogin[0]["lastLogin"], 'Y-m-d H:i:s');
+        $loginHour=substr($loginTime,-8, 2);
+        $present = new Presence();
+        if (intval ($loginHour) == 8){
+            var_dump(" in time");
+            $present->setPresent("OUI");
+            $present->setRetard("NON");
+            $present->setDateRetard(new \DateTime('now'));
+            $present->setDatePresence(new \DateTime('now'));
+            $present->setIdUser($user);
+
+        }
+
+        else if (intval ($loginHour) > 8 && intval ($loginHour) < 18 ){
+            var_dump("en retard");
+            $present->setPresent("OUI");
+            $present->setRetard("OUI");
+            $present->setDateRetard(new \DateTime('now'));
+            $present->setDatePresence(new \DateTime('now'));
+            $present->setIdUser($user);
+
+        }else if (intval ($loginHour) > 18) {
+            $present->setPresent("NON");
+            $present->setRetard("OUI");
+            $present->setDateRetard(new \DateTime('now'));
+            $present->setDatePresence(new \DateTime('now'));
+            $present->setIdUser($user);
+
+        }
+
+        $em->persist($present);
+        $em->flush();
+        
+        return null;
     }
 }

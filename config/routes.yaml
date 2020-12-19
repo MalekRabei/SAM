@@ -2,6 +2,11 @@ index:
     path: /
     controller: App\Controller\PerseController::new
 
+
+indexAdmin:
+  path: /listEmployee
+  controller: App\Controller\HomeController::index
+
 fos_user:
   resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
@@ -15,8 +20,9 @@ updated_index:
 
 
 PDF:
-  path: /listPDF
+  path: /admin/listPDF
   controller: App\Controller\HomeController::listPDF
+
 
 ajoutEmployee:
   path:     /admin/ajoutEmployee
@@ -29,6 +35,7 @@ modifEmployee:
 suppEmployee:
   path:     /admin/suppEmployee/{id}
   defaults: { _controller: App\Controller\EmployeeController::index }
+
 
 
 ajoutConge:
@@ -60,6 +67,8 @@ indexConge:
   defaults: { _controller: App\Controller\CongeController::index }
 
 
+
+
 search:
   path:     /search
   defaults: { _controller: App\Controller\EmployeeController::index }
@@ -67,6 +76,9 @@ search:
 presence:
   path:     /presence/{id}
   defaults: { _controller: App\Controller\HomeController::Present }
+
+
+
 
 demandeAutorisation:
   path:     /autorisation/demande
@@ -102,6 +114,8 @@ validerAutorisation:
   defaults: { _controller: App\Controller\AutorisationController::valider}
 
 
+
+
 ajoutPerse:
   path:     /perse/ajouter
   defaults: { _controller: App\Controller\PerseController::new }
@@ -123,3 +137,7 @@ suppPerse:
   path:     /perse/supp/{id}
   defaults: { _controller: App\Controller\PerseController::delete }
 
+
+PDFPerse:
+  path: /admin/perse/rapport
+  controller: App\Controller\PerseController::listPDF

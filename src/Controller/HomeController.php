@@ -10,6 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+// Include Dompdf required namespaces
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 
 class HomeController extends AbstractController
 {
@@ -217,25 +221,37 @@ class HomeController extends AbstractController
         return $realEntities;
     }
 
-    public function listPDF(Request $request){
+    public function listPDF(){
 
-        $snappy =$this->get("knp_snappy.pdf");
+        $list = $this->getDoctrine()
+            ->getRepository(Employee::class)->findAll();
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
 
-        $em=$this->getDoctrine()->getManager();
-        $list=$em->getRepository( Presence::class)-> PresentQuery();
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
 
-        $html = $this->renderView("pdf_report.html.twig", array('list' => $list));
-        $fichier = "Votre rapport";
-        $pdfPath = $this->getParameter('pdf_directory') . '/"' . $fichier . '.pdf"';
-        return new Response(
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('pdf_report.html.twig', [
+            'title' => "Welcome to our PDF Test",
+            'list'=>$list
+        ]);
 
-            $snappy->getOutputFromHtml($html),
-            200,
-            array(
-                'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'attachment;pdf_directory/filename"' . $fichier . '.pdf"'
-            )
-        );
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        //For view
+        //$dompdf->stream("",array("Attachment" => false));
+      // for download
+        return new Response (
+            $dompdf->stream());
 
     }
 

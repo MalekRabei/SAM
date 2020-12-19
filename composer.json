@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
+        "dompdf/dompdf": "^0.8.6",
         "friendsofsymfony/user-bundle": "~2.0",
         "knplabs/knp-snappy": "^1.2",
         "mgilet/notification-bundle": "^3.2",

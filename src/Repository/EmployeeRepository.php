@@ -56,4 +56,12 @@ class EmployeeRepository extends ServiceEntityRepository
             ->setParameter('str', '%' . $str . '%')
             ->getResult();
     }
+
+    public function Presence($id){
+
+        return $this->getEntityManager()
+            ->createQuery("SELECT user.lastLogin FROM App:User user
+            where user.id = $id")
+            ->getResult();
+    }
 }

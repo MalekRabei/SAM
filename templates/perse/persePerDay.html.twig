@@ -8730,7 +8730,7 @@
     <br>
     <br>
     <div>
-        <h3>Liste des employéés</h3>
+        <h3 class="blockquote text-center mb-0">Liste des perses  du {{currentDate |date("m/d/Y à H:i:s") }}</h3>
     </div>
     <br>
     <div class="container-table100" >
@@ -8741,12 +8741,9 @@
                         <thead>
                         <tr class="row100 head">
                             <th class="cell100 column1">Nom </th>
-                            <th class="cell100 column2">Société</th>
-                            <th class="cell100 column3">Présent</th>
-                            <th class="cell100 column4">Poste</th>
-                            <th class="cell100 column5">Matricule</th>
-                            <th class="cell100 column6">COD</th>
-                            <th class="cell100 column7">T</th>
+                            <th class="cell100 column2">Total</th>
+                            <th class="cell100 column3">Date</th>
+
                         </tr>
                         </thead>
                     </table>
@@ -8757,18 +8754,17 @@
                         {%for entity in list%}
                         <tbody>
                         <tr class="row100 body" style="color: #0f0f0f">
-                            <td class="cell100 column1">{{entity.nom}} {{entity.prenom}} </td>
-                            <td class="cell100 column2">{{entity.societe}}</td>
-                            <td class="cell100 column3">{{ entity.presence }}</td>
-                            <td class="cell100 column4">{{entity.poste}}</td>
-                            <td class="cell100 column5">{{entity.matricule}}</td>
-                            <td class="cell100 column6">{{entity.code}}</td>
-                            <td class="cell100 column7">{{entity.t}} </td>
+                            <td class="cell100 column1">{{entity.username}}  </td>
+                            <td class="cell100 column2">{{entity.total}}</td>
+                            <td class="cell100 column3">{{ entity.date  | date('d/m/Y') }}</td>
+
                         </tr>
                         {% endfor %}
                         </tbody>
 
                     </table>
+                    <br>
+                    <h6>Total du jour {{ totalPerDay }}  </h6>
                 </div>
             </div>
 
