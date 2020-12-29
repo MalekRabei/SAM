@@ -69,7 +69,17 @@ class AutorisationController extends AbstractController
 
             $em->persist($autorisation);
             $em->flush();
-            return $this->redirectToRoute("listAutorisation");
+            $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+            foreach ($usr as $role){
+                if ($role != "ROLE_ADMIN" ){
+                    echo 'supp from user ';
+                    return $this->redirectToRoute('demandeAutorisation');
+
+                } else
+                    echo 'supp from admin';
+                return $this->redirectToRoute('listAutorisation');
+
+            }
 
         }
         //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
@@ -154,7 +164,17 @@ class AutorisationController extends AbstractController
 
             $em->persist($autorisation);
             $em->flush();
-            return $this->redirectToRoute("demandeAutorisation");
+            $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+            foreach ($usr as $role){
+                if ($role != "ROLE_ADMIN" ){
+                    echo 'supp from user ';
+                    return $this->redirectToRoute('demandeAutorisation');
+
+                } else
+                    echo 'supp from admin';
+                return $this->redirectToRoute('listAutorisation');
+
+            }
 
         }
        // $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
@@ -235,16 +255,26 @@ class AutorisationController extends AbstractController
     }
 
 
-    public function delete(request $request, $id)
+    public function delete(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $autorisation = $em->getRepository(Autorisation::class)->find($id);
         $em->remove($autorisation );
         $em->flush();
-        return $this->redirectToRoute('listAutorisation');
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+        foreach ($usr as $role){
+            if ($role != "ROLE_ADMIN" ){
+                echo 'supp from user ';
+                return $this->redirectToRoute('demandeAutorisation');
+
+            } else
+                echo 'supp from admin';
+            return $this->redirectToRoute('listAutorisation');
+
+        }
     }
 
-    public function valider(request $request, $id){
+    public function valider(Request $request, $id){
 
         $em = $this->getDoctrine()->getManager();
 

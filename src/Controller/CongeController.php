@@ -20,7 +20,6 @@ class CongeController extends AbstractController
     public function index(): Response
     {
         $currentdate = new \DateTime('now');
-
         $congelist = $this->getDoctrine()->getRepository(Conge::class)
             ->congeList();
         return $this->render('conge/index.html.twig', [
@@ -60,7 +59,17 @@ class CongeController extends AbstractController
 
             $em->persist($conge);
             $em->flush();
-            return $this->redirectToRoute("listConge");
+            $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+            foreach ($usr as $role){
+                if ($role != "ROLE_ADMIN" ){
+                    echo 'supp from user ';
+                    return $this->redirectToRoute('ajoutConge');
+
+                } else
+                    echo 'supp from admin';
+                return $this->redirectToRoute('listConge');
+
+            }
 
         }
       //  $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
@@ -72,6 +81,7 @@ class CongeController extends AbstractController
 
 
         $currentdate = new \DateTime('now');
+
         return $this->render('conge/ajoutConge.html.twig', array(
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
@@ -117,7 +127,17 @@ class CongeController extends AbstractController
 
             $em->persist($conge);
             $em->flush();
-            return $this->redirectToRoute("listConge");
+            $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+            foreach ($usr as $role){
+                if ($role != "ROLE_ADMIN" ){
+                    echo 'supp from user ';
+                    return $this->redirectToRoute('ajoutConge');
+
+                } else
+                    echo 'supp from admin';
+                return $this->redirectToRoute('listConge');
+
+            }
 
         }
 
@@ -148,7 +168,43 @@ class CongeController extends AbstractController
         $conge = $em->getRepository(Conge::class)->find($id);
         $em->remove($conge);
         $em->flush();
-        return $this->redirectToRoute('ajoutConge');
+
+
+        $usr= $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+        foreach ($usr as $role){
+            if ($role != "ROLE_ADMIN" ){
+                echo 'supp from user ';
+                return $this->redirectToRoute('ajoutConge');
+
+            } else
+                echo 'supp from admin';
+            return $this->redirectToRoute('listConge');
+
+        }
+
+
+    }
+    public function valider(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+        $conge = $this->getDoctrine()
+            ->getRepository(Conge::class)->find($id);
+        $conge->setEtat("Validé");
+        $em->persist($conge);
+        $em->flush();
+        return $this->redirectToRoute("listConge");
+
+    }
+
+    public function rejeter(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+        $conge = $this->getDoctrine()
+            ->getRepository(Conge::class)->find($id);
+        $conge->setEtat("Rejeté");
+        $em->persist($conge);
+        $em->flush();
+        return $this->redirectToRoute("indexConge");
 
     }
 
@@ -213,17 +269,6 @@ class CongeController extends AbstractController
 
     }
 
-    public function valider(request $request, $id){
 
-        $em = $this->getDoctrine()->getManager();
-
-        $conge = $this->getDoctrine()
-            ->getRepository(Conge::class)->find($id);
-        $conge->setEtat("Validé");
-        $em->persist($conge);
-        $em->flush();
-        return $this->redirectToRoute("listConge");
-
-    }
 
 }

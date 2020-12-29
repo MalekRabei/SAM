@@ -67,4 +67,28 @@ class PresenceRepository extends ServiceEntityRepository
         return $res;
 
     }
+
+    public function rapport(){
+        $currentDateS = new \DateTime('now');
+        $currentDateE = new \DateTime('now');
+
+        var_dump($currentDateS);
+        $start= $currentDateS->setTime(24,00,00);
+        $end = $currentDateE->setTime(0,0);
+
+        $startS= $start->format('Y-m-d H:i:s');
+        $endS= $end->format('Y-m-d H:i:s');
+        $query = $this->getEntityManager()
+            ->createQuery("SELECT u.id as id, u.code as code, u.t as t, u.matricule as matricule
+            ,u.nom as nom , u.prenom as prenom, u.societe as societe,
+            u.poste as pro , po.poste as poste , p.present as present, p.retard as retard , p.datePresence as date
+            FROM App:Presence p , App:User u , App:Poste po
+            WHERE p.idUser = u.id
+            and u.idPoste= po.id
+            and p.datePresence BETWEEN '$startS' AND '$endS'
+            GROUP BY u.username");
+
+        $res = $query->getResult();
+        return $res;
+    }
 }

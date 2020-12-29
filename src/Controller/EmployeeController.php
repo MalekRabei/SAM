@@ -34,7 +34,7 @@ class EmployeeController extends AbstractController
          $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
          $user=$em->getRepository(User::class)->find($usr);
 
-        $employee = new Employee();
+        $employee = new User();
         if (isset($_POST['nom']) || isset($_POST['prenom']) || isset($_POST['poste']) || isset($_POST['matricule'])) {
             //condition d'ajout
             $nom = $_POST['nom'];
@@ -55,7 +55,7 @@ class EmployeeController extends AbstractController
             $employee->setT($t);
             $employee->setIdPoste($posi);
             $employee->setPresence('NON');
-
+            $employee->addRole('ROLE_USER');
             $em->persist($employee);
             $em->flush();
 
@@ -74,20 +74,21 @@ class EmployeeController extends AbstractController
 
     public function modifEmployee(Request $request, $id)
     {
-        $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
+       // $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $em = $this->getDoctrine()->getManager();
-        $pos= $this->getDoctrine()->getRepository(Positionnement::class)->posteQuery();
+        $pos= $this->getDoctrine()->getRepository(Poste::class)->posteQuery();
 
 
         $employee = $this->getDoctrine()
-            ->getRepository(Employee::class)->find($id);
+            ->getRepository(User::class)->find($id);
+        $username = $employee->getUsername();
         $nomA = $employee->getNom();
         $prenomA = $employee->getPrenom();
         $societeA = $employee->getSociete();
         $posteA = $employee->getPoste();
         $matriculeA = $employee->getMatricule();
         $codeA = $employee->getCode();
-        $positionnementA = $employee->getIdPositionnement();
+        $positionnementA = $employee->getIdPoste();
         $tA = $employee->getT();
         if (isset($_POST['nom']) || isset($_POST['prenom']) || isset($_POST['poste']) || isset($_POST['matricule'])) {
 
@@ -110,10 +111,12 @@ class EmployeeController extends AbstractController
             $employee->setMatricule($matricule);
             $employee->setCode($code);
             $employee->setT($t);
-            $employee->setIdPositionnement($posi);
+            $employee->setIdPoste($posi);
+           // $employee->addRole('ROLE_USER');
+
             $em->persist($employee);
             $em->flush();
-            return $this->redirectToRoute("index");
+            return $this->redirectToRoute("indexAdmin");
 
         }
         $list = $this->getDoctrine()->getRepository(Employee::class)->findAll();
@@ -125,6 +128,7 @@ class EmployeeController extends AbstractController
         return $this->render('employee/modifEmployee.html.twig'
             , array('id' => $id,
                 'list' => $list,
+                'username'=> $username ,
                 'nom' => $nomA,
                 'prenom' => $prenomA,
                 'societe' => $societeA,
@@ -132,8 +136,8 @@ class EmployeeController extends AbstractController
                 'matricule' => $matriculeA,
                 'code' => $codeA,
                 'positionnement' => $positionnementA,
+                'notifications'=>'test',
                 't' => $tA,
-                'notifications'=>$notifications,
                 'currentDate'=>$currentdate,
                 'pos'=>$pos));
 
@@ -144,10 +148,10 @@ class EmployeeController extends AbstractController
     {
 
         $em = $this->getDoctrine()->getManager();
-        $employee = $em->getRepository(Employee::class)->find($id);
+        $employee = $em->getRepository(User::class)->find($id);
         $em->remove($employee);
         $em->flush();
-        return $this->redirectToRoute('index');
+        return $this->redirectToRoute('indexAdmin');
     }
     public function listPDFAction(Request $request){
 
@@ -173,6 +177,9 @@ class EmployeeController extends AbstractController
 
     public function presence(){
 
+        $em = $this->getDoctrine()->getManager();
+
+
         $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
         $user=$em->getRepository(User::class)->find($usr);
 
@@ -181,8 +188,9 @@ class EmployeeController extends AbstractController
 
         $loginTime =  date_format($lastLogin[0]["lastLogin"], 'Y-m-d H:i:s');
         $loginHour=substr($loginTime,-8, 2);
+        var_dump($loginHour);
         $present = new Presence();
-        if (intval ($loginHour) == 8){
+        if (intval ($loginHour) <= 8){
             var_dump(" in time");
             $present->setPresent("OUI");
             $present->setRetard("NON");
@@ -211,7 +219,7 @@ class EmployeeController extends AbstractController
 
         $em->persist($present);
         $em->flush();
-        
-        return null;
+
+        return $this->redirectToRoute("ajoutPerse");
     }
 }

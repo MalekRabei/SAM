@@ -14,9 +14,9 @@ mgilet_notification:
   resource: "@MgiletNotificationBundle/Controller/"
   prefix: /notifications
 
-updated_index:
-  path:     /updated
-  defaults: { _controller: App\Controller\HomeController::updatedIndex }
+present_list:
+  path:     /admin/presentlist
+  defaults: { _controller: App\Controller\HomeController::listPresent }
 
 
 PDF:
@@ -50,9 +50,18 @@ suppConge:
   path:     /suppConge/{id}
   defaults: { _controller: App\Controller\CongeController::suppConge }
 
-validerConge:
-  path:     /admin/conge/{id}
+suppAdminConge:
+  path:     /suppConge/{id}
+  defaults: { _controller: App\Controller\CongeController::suppConge }
+
+rejeterConge:
+  path:     /admin/validerConge/{id}
   defaults: { _controller: App\Controller\CongeController::valider }
+
+
+validerConge:
+  path:     /admin/rejeterConge/{id}
+  defaults: { _controller: App\Controller\CongeController::rejeter }
 
 listConge:
   path:     /admin/listConge
@@ -74,8 +83,8 @@ search:
   defaults: { _controller: App\Controller\EmployeeController::index }
 
 presence:
-  path:     /presence/{id}
-  defaults: { _controller: App\Controller\HomeController::Present }
+  path:     /presence
+  defaults: { _controller: App\Controller\EmployeeController::presence }
 
 
 
@@ -102,7 +111,7 @@ showAutorisation:
   defaults: { _controller: App\Controller\AutorisationController::index }
 
 listAutorisation:
-  path:     /autorisation/liste
+  path:     /admin/autorisation/liste
   defaults: { _controller: App\Controller\AutorisationController::index}
 
 suppAutorisation:

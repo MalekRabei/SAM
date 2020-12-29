@@ -32,6 +32,43 @@ class User extends BaseUser
      */
     private $profession;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $societe;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $poste;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $matricule;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $code;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $t;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $presence;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Poste")
+     * @ORM\JoinColumn(name="idPoste",referencedColumnName="id" )
+     *
+     */
+    private $idPoste;
+
 
     public function getId(): ?int
     {
@@ -84,5 +121,117 @@ class User extends BaseUser
     public function setProfession($profession): void
     {
         $this->profession = $profession;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSociete()
+    {
+        return $this->societe;
+    }
+
+    /**
+     * @param mixed $societe
+     */
+    public function setSociete($societe): void
+    {
+        $this->societe = $societe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPoste()
+    {
+        return $this->poste;
+    }
+
+    /**
+     * @param mixed $poste
+     */
+    public function setPoste($poste): void
+    {
+        $this->poste = $poste;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatricule()
+    {
+        return $this->matricule;
+    }
+
+    /**
+     * @param mixed $matricule
+     */
+    public function setMatricule($matricule): void
+    {
+        $this->matricule = $matricule;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code): void
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getT()
+    {
+        return $this->t;
+    }
+
+    /**
+     * @param mixed $t
+     */
+    public function setT($t): void
+    {
+        $this->t = $t;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPresence()
+    {
+        return $this->presence;
+    }
+
+    /**
+     * @param mixed $presence
+     */
+    public function setPresence($presence): void
+    {
+        $this->presence = $presence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdPoste()
+    {
+        return $this->idPoste;
+    }
+
+    /**
+     * @param mixed $idPoste
+     */
+    public function setIdPoste($idPoste): void
+    {
+        $this->idPoste = $idPoste;
     }
 }

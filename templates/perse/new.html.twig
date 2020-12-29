@@ -86,8 +86,10 @@
                 <!-- ============================================================== -->
                 <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5 col-5">
                     <div class="card">
-                        <h5 class="card-header">Gestion Perse </h5>
+                        <h3 class="card-header">Gestion Perse </h3>
                         <div class="card-body">
+                            <h4><a style="color: #002752" href="{{ path('presence') }}"> >> Marquer la présence </a></h4>
+
                             <form id="validationform" data-parsley-validate="" novalidate="" method="post"
                                   action="{{ path('ajoutPerse') }}">
                                 <div class="form-group row">
@@ -142,7 +144,7 @@
                         <br><br>
                         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 
-                        <h5 class="card-header">La Liste des PERSES </h5>
+                        <h3 class="card-header">La Liste des PERSES </h3>
 
                         <div class="card-body p-0">
 

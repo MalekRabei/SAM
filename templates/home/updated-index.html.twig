@@ -104,8 +104,6 @@
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 
                             <h5 class="card-header">La Liste des Employées</h5>
-                            <h6><a href="{{ path('index') }}" style="color: #0a3c93" > > Marquer la présence</a></h6>
-
                             <div class="card-body p-0">
 
                                 <div class="table-responsive" >
@@ -122,8 +120,12 @@
                                             <th class="border border-left-0">Matricule</th>
                                             <th class="border border-left-0">COD</th>
                                             <th class="border border-left-0">T</th>
+                                            <th class="border border-left-0">Date Connexion</th>
                                             <th class="border border-left-0">Positionnement</th>
+
+
                                             <th>
+                                            Action
                                             <td>
                                                 <div  class="dropdown float-right">
                                                     <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
@@ -207,7 +209,7 @@
 
                                                 <td >
                                                     <select class="form-control" id="input-select" style="width:120px" disabled>
-                                                        <option selected> {{ entity.poste }}</option>
+                                                        <option selected> {{ entity.pro }}</option>
                                                         <option >Directeur</option>
                                                         <option >Chef D'équipes</option>
                                                         <option>Informatique</option>
@@ -221,9 +223,11 @@
                                                 <td>{{ entity.matricule }}</td>
                                                 <td>{{ entity.code }}</td>
                                                 <td>{{ entity.t }}</td>
+                                                <td>{{ entity.date |date("m/d/Y H:i:s") }}</td>
+
                                                 <td>
                                                     <select class="form-control" id="input-select" name="idPoste" disabled>
-                                                        <option selected>{{ entity.idPositionnement }}</option>
+                                                        <option selected>{{ entity.poste }}</option>
 
 
                                                         <a href="#">

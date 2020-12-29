@@ -8743,10 +8743,12 @@
                             <th class="cell100 column1">Nom </th>
                             <th class="cell100 column2">Société</th>
                             <th class="cell100 column3">Présent</th>
-                            <th class="cell100 column4">Poste</th>
-                            <th class="cell100 column5">Matricule</th>
-                            <th class="cell100 column6">COD</th>
-                            <th class="cell100 column7">T</th>
+                            <th class="cell100 column4">Retard</th>
+                            <th class="cell100 column5">Poste</th>
+                            <th class="cell100 column6">Matricule</th>
+                            <th class="cell100 column7">COD</th>
+                            <th class="cell100 column8">T</th>
+                            <th class="cell100 column9">Date Connexion</th>
                         </tr>
                         </thead>
                     </table>
@@ -8759,11 +8761,14 @@
                         <tr class="row100 body" style="color: #0f0f0f">
                             <td class="cell100 column1">{{entity.nom}} {{entity.prenom}} </td>
                             <td class="cell100 column2">{{entity.societe}}</td>
-                            <td class="cell100 column3">{{ entity.presence }}</td>
-                            <td class="cell100 column4">{{entity.poste}}</td>
-                            <td class="cell100 column5">{{entity.matricule}}</td>
-                            <td class="cell100 column6">{{entity.code}}</td>
-                            <td class="cell100 column7">{{entity.t}} </td>
+                            <td class="cell100 column3">{{ entity.present }}</td>
+                            <td class="cell100 column4">{{ entity.retard }}</td>
+                            <td class="cell100 column5">{{entity.poste}}</td>
+                            <td class="cell100 column6">{{entity.matricule}}</td>
+                            <td class="cell100 column7">{{entity.code}}</td>
+                            <td class="cell100 column8">{{entity.t}} </td>
+                            <td class="cell100 column9">{{entity.date|date("m/d/Y H:i:s") }} </td>
+
                         </tr>
                         {% endfor %}
                         </tbody>

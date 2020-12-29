@@ -173,7 +173,7 @@ class PerseController extends Controller
         $list = $this->getDoctrine()->getRepository(Perse::class)->perseGroupedByUser();
 
         $listByUser = $this->getDoctrine()->getRepository(Perse::class)->listByUser($usr);
-        $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay($currentdate);
+        $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay();
 
         var_dump($totalPerDay[0]["total"]);
 
@@ -200,7 +200,7 @@ class PerseController extends Controller
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
         $list = $this->getDoctrine()->getRepository(Perse::class)->perseGroupedByUser();
         $currentdate = new \DateTime('now');
-        $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay($currentdate);
+        $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay();
 
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();

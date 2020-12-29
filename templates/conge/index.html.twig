@@ -94,7 +94,8 @@
                                                 <td>{{ entity.dateFin | date('d/m/Y ')}} </td>
                                                 <td><a href="{{ path('modifConge',{id: entity.id}) }}"> Modifier</a><br>
                                                     <a onclick="return confirm('Etes-vous sûr de supprimer ce congé?')" href="{{ path('suppConge',{id:entity.id}) }}"> Supprimer</a><br>
-                                                    <a onclick="return confirm('Etes-vous sûr de valider ce congé?')" href="{{ path('validerConge',{id:entity.id}) }}"> Valider</a></td>
+                                                    <a onclick="return confirm('Etes-vous sûr de valider ce congé?')" href="{{ path('validerConge',{id:entity.id}) }}"> Valider</a><br>
+                                                <a onclick="return confirm('Etes-vous sûr de rejeter ce congé?')" href="{{ path('rejeterConge',{id:entity.id}) }}"> Rejeter </a></td>
 
                                             </tr>
 

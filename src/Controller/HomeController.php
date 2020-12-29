@@ -6,6 +6,7 @@ use App\Entity\Calcul;
 use App\Entity\Employee;
 use App\Entity\Poste;
 use App\Entity\Presence;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,11 @@ class HomeController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Unable to access this page!');
 
         $list = $this->getDoctrine()
-            ->getRepository(Employee::class)->findAll();
+            ->getRepository(User::class)->findAll();
         if ($request->isMethod('POST')) {
             $nom = $request->get('nom');
             $list = $this->getDoctrine()
-                ->getRepository(Employee::class)->findBy(array('nom' => $nom));
+                ->getRepository(User::class)->findBy(array('nom' => $nom));
         }
         //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $currentdate = new \DateTime('now');
@@ -79,32 +80,12 @@ class HomeController extends AbstractController
 
     }
 
-    public function updatedIndex(Request $request)
+
+    public function listPresent(Request $request)
     {
-
-        $list = $this->getDoctrine()
-            ->getRepository(Presence::class)->PresentQuery();
-        if ($request->isMethod('POST')) {
-            $nom = $request->get('nom');
-            $list = $this->getDoctrine()
-                ->getRepository(Employee::class)->findBy(array('nom' => $nom));
-        }
-       // $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $currentdate = new \DateTime('now');
-
-// From your controller or service
-       /* $data = array(
-            'my-message' => "My custom message",
-        );
-        $pusher = $this->get('mrad.pusher.notificaitons');
-        $channel = 'messages';
-        $pusher->trigger($data, $channel);*/
-
-// or you can keep the channel pram empty and will be broadcasted on "notifications" channel by default
-       // $pusher->trigger($data);
-
-
-
+        $list = $this->getDoctrine()
+            ->getRepository(Presence::class)->rapport();
 
         return $this->render('home/updated-index.html.twig', array(
             'currentDate' => $currentdate,
@@ -113,76 +94,6 @@ class HomeController extends AbstractController
         ));
 
     }
-    public function Present($id){
-        $presence = new Presence();
-        $em = $this->getDoctrine()->getManager();
-        $idE = $em->getRepository(Employee::class)->find($id);
-        $listEmployee = $em->getRepository(Employee::class)->find($id);
-        $idCurrent = $listEmployee->getId();
-
-        $idPoste = $_POST['idPoste'];
-        $idP = intval($idPoste);
-        $poste = $this->getDoctrine()->getRepository(Poste::class)->find($idP);
-
-        if (!isset($_POST['switch16' . $idCurrent])) {
-            $present = "NON";
-            $_POST['switch16' . $idCurrent] = $present;
-
-        } else {
-            $present = "OUI";
-            $_POST['switch16' . $idCurrent] = $present;
-
-
-        }
-
-        if (!isset($_POST['switch18'.$idCurrent])) {
-            $retard = "NON";
-            $_POST['switch18'.$idCurrent] = $retard;
-
-        } else {
-            $retard = "OUI";
-            $_POST['switch18'.$idCurrent] = $retard;
-
-
-        }
-
-        if ($present == "OUI") {
-            $presence->setPresent("OUI");
-            $presence->setDatePresence(new \DateTime('now'));
-            $presence->setIdEmployee($idE);
-            $listEmployee->setIdPoste($poste);
-
-        } else if ($present == "NON") {
-            $presence->setPresent("NON");
-            $presence->setDatePresence(new \DateTime('now'));
-            $presence->setIdEmployee($idE);
-            $listEmployee->setIdPoste($poste);
-
-
-        }
-
-        if ($retard == "OUI") {
-            $presence->setRetard("OUI");
-            $presence->setDateRetard(new \DateTime(('now')));
-            $presence->setIdEmployee($idE);
-            $listEmployee->setIdPoste($poste);
-
-
-        } else if ($retard == "NON") {
-            $presence->setRetard("NON");
-            $presence->setDateRetard(new \DateTime(('now')));
-            $presence->setIdEmployee($idE);
-            $listEmployee->setIdPoste($poste);
-
-
-        }
-        $em->persist($presence);
-        $em->flush();
-
-        return $this->redirectToRoute('updated_index');
-
-    }
-
 
     public function rechercheAvanceAction(Request $request)
     {
@@ -224,7 +135,7 @@ class HomeController extends AbstractController
     public function listPDF(){
 
         $list = $this->getDoctrine()
-            ->getRepository(Employee::class)->findAll();
+            ->getRepository(Presence::class)->rapport();
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
