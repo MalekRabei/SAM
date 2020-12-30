@@ -73,4 +73,16 @@ class CongeRepository extends ServiceEntityRepository
         $res = $query->getResult();
         return $res;
     }
+
+    public function congeValideQuery(){
+        $query= $this->getEntityManager()
+            ->createQuery("
+            SELECT c
+            FROM App:Conge c 
+            WHERE c.etat= 'Validé'
+
+            ");
+        $res = $query->getResult();
+        return $res;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Calcul;
 use App\Entity\Employee;
 use App\Entity\Poste;
 use App\Entity\Presence;
@@ -121,12 +122,37 @@ class EmployeeController extends AbstractController
         }
         $list = $this->getDoctrine()->getRepository(Employee::class)->findAll();
 
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
 
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
 
         $currentdate = new \DateTime('now');
 
         return $this->render('employee/modifEmployee.html.twig'
-            , array('id' => $id,
+            , array('nbTerna' => $nbterna
+            , 'nbShapeTek' => $nbShapeTek
+            , 'nbCongeShapeTek' => $nbCongeShapeTek,
+                'nbCongeTerna' => $nbCongeTerna
+            , 'nbpresent' => $nbpresentTerna,
+                'nbpresentSh' => $nbpresentSh,
+                'id' => $id,
                 'list' => $list,
                 'username'=> $username ,
                 'nom' => $nomA,

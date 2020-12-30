@@ -72,21 +72,12 @@
 
                                         <th>
                                             Actions
-                                        <td>
-                                            <div class="dropdown float-right">
-                                                <a href="#" class="dropdown-toggle  card-drop" data-toggle="dropdown" aria-expanded="true">
-
-                                                </a>
-
-                                                <div class="dropdown-menu dropdown-menu-right">
-
-                                                    <a href="{{ path('PDF') }}" class="dropdown-item" >Export Rapport</a>
-
-                                                </div>
-                                            </div>
-                                        </td>
                                         </th>
                                         <th></th>
+                                        <th></th>
+                                        <th></th>
+
+
 
                                     </tr>
                                     </thead>
@@ -105,6 +96,7 @@
 
                                         <td><a onclick="return confirm('Etes-vous sûr de supprimer cette autorisation?')" href="{{ path('suppAutorisation',{id:entity.id}) }}"> Supprimer</a></td>
                                         <td><a onclick="return confirm('Etes-vous sûr de valider cette autorisation?')" href="{{ path('validerAutorisation',{id:entity.id}) }}"> Valider</a></td>
+                                        <td><a onclick="return confirm('Etes-vous sûr de rejeter cette autorisation?')" href="{{ path('rejeterAutorisation',{id:entity.id}) }}"> Rejeter</a></td>
 
                                     </tr>
                                     </tbody>

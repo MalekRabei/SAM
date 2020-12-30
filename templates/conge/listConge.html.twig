@@ -124,21 +124,21 @@
                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
                                 <div id='external-events' >
                                     <h4>Liste Totale Terna</h4>
-                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
-                                    <div class='fc-event'>Totale maladie 1 </div>
-                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale 0</div>
-                                    <div class='fc-event '>Totale maternité 0</div>
-                                    <div class='fc-event bg-info border-info'>Totale Repos 0</div>
-                                    <div class='fc-event bg-brand border-brand'>Totale 3 </div>
+                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification  {{ nbAbsentTerna[0]['nbConge'] }}</div>
+                                    <div class='fc-event'>Totale maladie {{ nbMaladieTerna[0]['nbConge'] }} </div>
+                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale {{ nbFamilialeTerna[0]['nbConge'] }}</div>
+                                    <div class='fc-event '>Totale maternité {{ nbMaterniteTerna[0]['nbConge'] }}</div>
+                                    <div class='fc-event bg-info border-info'>Totale Repos {{ nbReposTerna[0]['nbConge'] }}</div>
+                                    <div class='fc-event bg-brand border-brand'>Totale {{ nbCongeTerna[0]['nbConge'] }} </div>
                                 </div>
                                 <div id='external-events' style="margin-top: 50px"  >
                                     <h4>Liste Totale Shaptek</h4>
-                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification 0</div>
-                                    <div class='fc-event'>Totale maladie 0</div>
-                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale 1</div>
-                                    <div class='fc-event '>Totale maternité  1</div>
-                                    <div class='fc-event bg-info border-info'>Totale Repos 0</div>
-                                    <div class='fc-event bg-brand border-brand'>Totale 2</div>
+                                    <div class='fc-event bg-brand border-brand'>Totale aucune justification {{ nbAbsentShaptek[0]['nbConge'] }}</div>
+                                    <div class='fc-event'>Totale maladie {{ nbMaladieShaptek[0]['nbConge'] }}</div>
+                                    <div class='fc-event bg-secondary border-secondary'>Totale familiale {{ nbFamilialeShaptek[0]['nbConge'] }}</div>
+                                    <div class='fc-event '>Totale maternité  {{ nbMaterniteShaptek[0]['nbConge']  }}</div>
+                                    <div class='fc-event bg-info border-info'>Totale Repos {{ nbReposShaptek[0]['nbConge'] }}</div>
+                                    <div class='fc-event bg-brand border-brand'>Totale {{ nbCongeShaptek[0]['nbConge'] }}</div>
 
 
                                 </div>

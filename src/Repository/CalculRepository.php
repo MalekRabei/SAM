@@ -19,39 +19,11 @@ class CalculRepository extends ServiceEntityRepository
         parent::__construct($registry, Calcul::class);
     }
 
-    // /**
-    //  * @return Calcul[] Returns an array of Calcul objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Calcul
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 
     public function totalEmployeeTernaQuery(){
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(e.id) as total
-            from App:Employee e
+            from App:User e
             where e.societe = 'Terna' ");
         $res=$query->getResult();
         return $res;
@@ -59,21 +31,22 @@ class CalculRepository extends ServiceEntityRepository
     public function totalEmployeeShapeTekQuery(){
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(e.id) as total
-            from App:Employee e
+            from App:User e
             where e.societe = 'ShapeTek' ");
         $res=$query->getResult();
         return $res;
     }
+
     public function nbCongeTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
         $query=$this->getEntityManager()
-            ->createQuery("SELECT count(employee.id) as nbConge
-                FROM App:Conge conge , App:Employee employee , App:Historique historique
-                WHERE (employee.id=conge.idClient or historique.present ='NON')
-                 and employee.id=historique.idEmployee 
-                 and employee.societe ='Terna'
-                and conge.dateFin >= '$current'
+            ->createQuery("SELECT count(conge.id) as nbConge
+                FROM App:Conge conge , App:User employee 
+                WHERE employee.id = conge.idUser 
+                and employee.societe = 'Terna'
+                and conge.etat='Validé'
+                 and conge.dateFin >= '$current'
             ");
         $res=$query->getResult();
         return $res;
@@ -83,10 +56,10 @@ class CalculRepository extends ServiceEntityRepository
         $current =$sysdate->format("Y-m-d");
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(employee.id) as nbConge
-                FROM App:Conge conge , App:Employee employee , App:Historique historique
+                FROM App:Conge conge , App:User employee 
                 WHERE  employee.societe ='ShapeTek'
-                  and (employee.id=conge.idClient or historique.present ='NON')
-                 and employee.id=historique.idEmployee 
+                  and employee.id=conge.idUser
+                  and conge.etat='Validé'
                 and conge.dateFin >= '$current'
             ");
         $res=$query->getResult();
@@ -96,126 +69,145 @@ class CalculRepository extends ServiceEntityRepository
     public function nbMaladieTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
+        $word='Maladie';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
             and e.societe = 'Terna'
-            and c.motif = 'Maladie'");
+            and c.etat='Validé'
+           and c.motif LIKE :word ")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbReposTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
+        $word= 'Repos';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
             and e.societe = 'Terna'
-            and c.motif = 'Repos'
-            ");
+             and c.etat='Validé'
+            and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbMaterniteTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
+        $word = 'Maternite';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'Terna'
-            and c.motif = 'Maternité'
+            and c.motif LIKE :word
             
-            ");
+            ")
+            ->setParameter('word', '%'.$word.'%')
+        ;
         $res=$query->getResult();
         return $res;
     }
     public function nbFamilialeTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
+        $word= 'Familiale';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'Terna'
-            and c.motif = 'Familiale'
-            
-            ");
+            and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbAbsentTernaQuery(){
         $sysdate = new \DateTime('now');
         $current =$sysdate->format("Y-m-d");
+        $word='Aucune Justificatiion';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'Terna'
-            and c.motif = 'Aucune Justification'
-            
-            ");
+             and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
 
 
     public function nbMaladieShTQuery(){
+        $word = 'Maladie';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'ShapeTek'
-            and c.motif = 'Maladie'");
+             and c.motif LIKE :word ")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbReposShTQuery(){
+        $word = 'Repos';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'ShapeTek'
-            and c.motif = 'Repos'
-            ");
+             and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbMaterniteShTQuery(){
+        $word = 'Maternite';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'ShapeTek'
-            and c.motif = 'Maternité'
-            
-            ");
+             and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbFamilialeShTQuery(){
+        $word='Familiale';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'ShapeTek'
-            and c.motif = 'Familiale'
-            
-            ");
+             and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }
     public function nbAbsentShTQuery(){
+       $word = 'Aucune Justification';
         $query=$this->getEntityManager()
             ->createQuery("SELECT count(c.id) as nbConge
-            from App:Conge c , App:Employee e
-            where e.id = c.idClient
+            from App:Conge c , App:User e
+            where e.id = c.idUser
+             and c.etat='Validé'
             and e.societe = 'ShapeTek'
-            and c.motif = 'Aucune Justification'
-            
-            ");
+            and c.motif LIKE :word")
+            ->setParameter('word', '%'.$word.'%');
         $res=$query->getResult();
         return $res;
     }

@@ -20,9 +20,36 @@ class CongeController extends AbstractController
     public function index(): Response
     {
         $currentdate = new \DateTime('now');
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
         $congelist = $this->getDoctrine()->getRepository(Conge::class)
             ->congeList();
         return $this->render('conge/index.html.twig', [
+            'nbTerna' => $nbterna
+            , 'nbShapeTek' => $nbShapeTek
+            , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+            , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
+            'currentDate' => $currentdate,
             'list'=>$congelist,
             'currentDate'=>$currentdate,
             'notifications'=>'test'
@@ -32,6 +59,28 @@ class CongeController extends AbstractController
 
     public function ajoutConge(Request $request)
     {
+
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
+
         $conge = new Conge();
         $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
 
@@ -87,7 +136,13 @@ class CongeController extends AbstractController
             'notifications'=>"test",
             'solde'=>$solde,
             'currentDate'=>$currentdate,
-            'list'=>$congelist
+            'list'=>$congelist,
+                'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             )
             );
 
@@ -96,6 +151,27 @@ class CongeController extends AbstractController
 
     public function modifConge(Request $request, $id)
     {
+
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
         //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $em = $this->getDoctrine()->getManager();
         //recuperer l id user
@@ -150,6 +226,12 @@ class CongeController extends AbstractController
         $currentdate = new \DateTime('now');
 
         return $this->render('conge/modifConge.html.twig', array(
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'listEmployee' => $listEmployee,
             'motif' => $motifA,
             'dateDebut' => $dtDebutA,
@@ -192,7 +274,7 @@ class CongeController extends AbstractController
         $conge->setEtat("Validé");
         $em->persist($conge);
         $em->flush();
-        return $this->redirectToRoute("listConge");
+        return $this->redirectToRoute("indexConge");
 
     }
 
@@ -201,6 +283,7 @@ class CongeController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $conge = $this->getDoctrine()
             ->getRepository(Conge::class)->find($id);
+
         $conge->setEtat("Rejeté");
         $em->persist($conge);
         $em->flush();
@@ -211,19 +294,78 @@ class CongeController extends AbstractController
     public function listConge()
     {
 
-        //$notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
+
+
+        //terna
+        $nbCongeTerna = $this->getDoctrine()->getRepository(Calcul::class)->nbCongeTernaQuery();
+
+        $nbAbsentTerna = $this->getDoctrine()->getRepository(Calcul::class)->nbAbsentTernaQuery();
+        $nbMaladieTerna = $this->getDoctrine()->getRepository(Calcul::class)->nbMaladieTernaQuery();
+        $nbMaterniteTerna = $this->getDoctrine()->getRepository(Calcul::class)->nbMaterniteTernaQuery();
+        $nbReposTerna = $this->getDoctrine()->getRepository(Calcul::class)-> nbReposTernaQuery();
+        $nbFamilialeTerna = $this->getDoctrine()->getRepository(Calcul::class)->nbFamilialeTernaQuery();
+
+
+        //shaptek
+        $nbCongeShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbCongeShaptekQuery();
+
+        $nbReposShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbReposShTQuery();
+        $nbMaladieShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbMaladieShTQuery();
+        $nbMaterniteShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbMaterniteShTQuery();
+        $nbFamilialeShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbFamilialeShTQuery();
+        $nbAbsentShaptek = $this->getDoctrine()->getRepository(Calcul::class)->nbAbsentShTQuery();
 
 
 
-        $list = $this->getDoctrine()->getRepository(Conge::class)->findAll();
+
+        $list = $this->getDoctrine()->getRepository(Conge::class)->congeValideQuery();
 
         $currentdate = new \DateTime('now');
 
         return $this->render('conge/listConge.html.twig', [
             'controller_name' => 'CongeController',
+            'nbTerna' => $nbterna
+            , 'nbShapeTek' => $nbShapeTek
+            , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+            , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'list' => $list,
             'notifications'=>"test",
-            'currentDate'=>$currentdate
+            'currentDate'=>$currentdate,
+            'nbAbsentTerna'=>$nbAbsentTerna,
+            'nbMaladieTerna'=>$nbMaladieTerna,
+            'nbMaterniteTerna'=>$nbMaterniteTerna,
+            'nbReposTerna'=>$nbReposTerna,
+            'nbFamilialeTerna'=>$nbFamilialeTerna,
+            'nbCongeTerna'=>$nbCongeTerna,
+
+            'nbAbsentShaptek'=>$nbAbsentShaptek,
+            'nbMaladieShaptek'=>$nbMaladieShaptek,
+            'nbMaterniteShaptek'=>$nbMaterniteShaptek,
+            'nbReposShaptek'=>$nbReposShaptek,
+            'nbFamilialeShaptek'=>$nbFamilialeShaptek,
+            'nbCongeShaptek'=>$nbCongeShaptek
         ]);
     }
 

@@ -32,11 +32,37 @@ class AutorisationController extends AbstractController
       //  $notifications = $this->getDoctrine()->getRepository(Notification::class)->findAll();
         $currentdate = new \DateTime('now');
 
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
 
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
 
         $poste= $this->getDoctrine()->getRepository(Poste::class)->posteQuery();
 
         return $this->render('autorisation/index.html.twig', [
+            'nbTerna' => $nbterna
+            , 'nbShapeTek' => $nbShapeTek
+            , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+            , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
+            'currentDate' => $currentdate,
             'controller_name' => 'AutorisationController',
             'poste'=>$poste,
             'currentDate' => $currentdate,
@@ -47,6 +73,23 @@ class AutorisationController extends AbstractController
 
     public function new()
     {   $currentdate = new \DateTime('now');
+
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
+
         $autorisation = new Autorisation();
         $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
 
@@ -88,6 +131,12 @@ class AutorisationController extends AbstractController
         $list = $this->getDoctrine()->getRepository(Autorisation::class)->autorisationByUser($usr);
 
         return $this->render('autorisation/new.html.twig', array(
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
             'currentDate'=>$currentdate,
@@ -181,10 +230,35 @@ class AutorisationController extends AbstractController
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
         $list = $this->getDoctrine()->getRepository(Autorisation::class)->autorisationByUser($usr);
 
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
 
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
 
 
         return $this->render('autorisation/edit.html.twig', array(
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'id'=>$id,
             'motif'=>$motifA ,
             'nbHeure'=> $nbHeureA,
@@ -284,6 +358,22 @@ class AutorisationController extends AbstractController
             $em->persist($autorisation);
             $em->flush();
             return $this->redirectToRoute("listAutorisation");
+
+    }
+
+
+
+
+    public function rejeter(Request $request, $id){
+
+        $em = $this->getDoctrine()->getManager();
+
+        $autorisation = $this->getDoctrine()
+            ->getRepository(Autorisation::class)->find($id);
+        $autorisation->setEtat("Rejeté");
+        $em->persist($autorisation);
+        $em->flush();
+        return $this->redirectToRoute("listAutorisation");
 
     }
 

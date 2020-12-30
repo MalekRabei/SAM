@@ -34,36 +34,26 @@ class HomeController extends AbstractController
         $currentdate = new \DateTime('now');
 
 
-// or you can keep the channel pram empty and will be broadcasted on "notifications" channel by default
-       // $pusher->trigger($data);
-        $nbterna=0;
-        $nbShapeTek=0;
-        $nbpresentTerna=0;
-        $nbCongeTerna=0;
-        $nbCongeShapeTek=0;
-        $nbpresentSh=0;
-
-        if(isset($nbemployeeTerna)){
             $nbemployeeTerna = $this->getDoctrine()
                 ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
             $nbterna = $nbemployeeTerna[0]["total"];
-            var_dump($nbterna);}
-        if(!isset($nbCongeTerna )){
+
+
             $nbCongeTerna = $this->getDoctrine()
                 ->getRepository(Calcul::class)->nbCongeTernaQuery();
             $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
-            $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);}
-        if(!isset($nbCongeShapeTek)) {
+            $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
             $nbemployeeShapeTek = $this->getDoctrine()
                 ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
             $nbShapeTek = $nbemployeeShapeTek[0]["total"];
-        }
-        if(!isset($nbCongeShapeTek)) {
+
+
             $nbCongeShapeTek = $this->getDoctrine()
                 ->getRepository(Calcul::class)->nbCongeShaptekQuery();
             $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
             $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
-        }
+
         $poste= $this->getDoctrine()->getRepository(Poste::class)->posteQuery();
         return $this->render('home/index.html.twig', array(
             'poste'=>$poste,
@@ -80,14 +70,75 @@ class HomeController extends AbstractController
 
     }
 
+    public function base(){
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
+
+
+        return $this->render('base.html.twig', array(
+
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
+            'notifications'=>"test",
+        ));
+    }
 
     public function listPresent(Request $request)
     {
+
         $currentdate = new \DateTime('now');
+
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
         $list = $this->getDoctrine()
             ->getRepository(Presence::class)->rapport();
 
         return $this->render('home/updated-index.html.twig', array(
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'currentDate' => $currentdate,
             'list' => $list,
             'notifications'=>"test",

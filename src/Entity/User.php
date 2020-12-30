@@ -33,38 +33,38 @@ class User extends BaseUser
     private $profession;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255 , nullable=true)
      */
     private $societe;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $poste;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $matricule;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $code;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $t;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $presence;
 
     /**
      * @ORM\ManyToOne(targetEntity="Poste")
-     * @ORM\JoinColumn(name="idPoste",referencedColumnName="id" )
+     * @ORM\JoinColumn(name="idPoste",referencedColumnName="id" , nullable=true)
      *
      */
     private $idPoste;

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Calcul;
 use App\Entity\Employee;
 use App\Entity\Perse;
 use App\Entity\Presence;
@@ -20,7 +21,27 @@ class PerseController extends Controller
 
     public function new()
     {
+
+        //base sidebar
         $currentdate = new \DateTime('now');
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
+
+
+
         $em = $this->getDoctrine()->getManager();
         $perse = new Perse();
         if (isset($_POST['numeroPerse'])) {
@@ -58,47 +79,15 @@ class PerseController extends Controller
         $manager->addNotification(array($perse), $notif, true);
 
 
-      /*  $usr= $this->get('security.token_storage')->getToken()->getUser()->getId();
-        $user=$em->getRepository(User::class)->find($usr);
 
-
-        $lastLogin= $this->getDoctrine()->getRepository(Employee::class)->presence($usr);
-
-        $loginTime =  date_format($lastLogin[0]["lastLogin"], 'Y-m-d H:i:s');
-        $loginHour=substr($loginTime,-8, 2);
-        $present = new Presence();
-        if (intval ($loginHour) == 8){
-            var_dump(" in time");
-            $present->setPresent("OUI");
-            $present->setRetard("NON");
-            $present->setDateRetard(new \DateTime('now'));
-            $present->setDatePresence(new \DateTime('now'));
-            $present->setIdUser($user);
-
-        }
-
-        else if (intval ($loginHour) > 8 && intval ($loginHour) < 18 ){
-            var_dump("en retard");
-            $present->setPresent("OUI");
-            $present->setRetard("OUI");
-            $present->setDateRetard(new \DateTime('now'));
-            $present->setDatePresence(new \DateTime('now'));
-            $present->setIdUser($user);
-
-        }else if (intval ($loginHour) > 18) {
-            $present->setPresent("NON");
-            $present->setRetard("OUI");
-            $present->setDateRetard(new \DateTime('now'));
-            $present->setDatePresence(new \DateTime('now'));
-            $present->setIdUser($user);
-
-        }
-
-        $em->persist($present);
-        $em->flush();*/
 
         return $this->render('perse/new.html.twig', array(
-
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'listEmployee' => $listEmployee,
             'notifications'=>"test",
             'list' => $list ,
@@ -109,6 +98,26 @@ class PerseController extends Controller
     public function edit(Request $request, $id)
     {
         $currentdate = new \DateTime('now');
+        //base side bar
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
         $em = $this->getDoctrine()->getManager();
 
         $perse =  $this->getDoctrine()->getRepository(Perse::class)->find($id);
@@ -138,6 +147,12 @@ class PerseController extends Controller
 
 
         return $this->render('perse/edit.html.twig', array(
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'id'=>$id,
             'numeroPerse'=> $numeroPerseA,
             'note'=> $noteA,
@@ -159,8 +174,27 @@ class PerseController extends Controller
 
 
     public function admin()
-    {
+    {   //base side bar
         $currentdate = new \DateTime('now');
+        $nbemployeeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeTernaQuery();
+        $nbterna = $nbemployeeTerna[0]["total"];
+
+
+        $nbCongeTerna = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeTernaQuery();
+        $nbCongeTerna = $nbCongeTerna[0]["nbConge"];
+        $nbpresentTerna = intval($nbterna) - intval($nbCongeTerna);
+
+        $nbemployeeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->totalEmployeeShapeTekQuery();
+        $nbShapeTek = $nbemployeeShapeTek[0]["total"];
+
+
+        $nbCongeShapeTek = $this->getDoctrine()
+            ->getRepository(Calcul::class)->nbCongeShaptekQuery();
+        $nbCongeShapeTek = $nbCongeShapeTek[0]["nbConge"];
+        $nbpresentSh = intval($nbShapeTek) - intval($nbCongeShapeTek);
         $em = $this->getDoctrine()->getManager();
 
         //recuperer l id user
@@ -172,28 +206,28 @@ class PerseController extends Controller
         $listEmployee = $this->getDoctrine()->getRepository(Employee::class)->findAll();
         $list = $this->getDoctrine()->getRepository(Perse::class)->perseGroupedByUser();
 
-        $listByUser = $this->getDoctrine()->getRepository(Perse::class)->listByUser($usr);
+
+        $listAllUser = $this->getDoctrine()->getRepository(Perse::class)-> listAllUsers();
+
+       // $listByUser = $this->getDoctrine()->getRepository(Perse::class)->listByUser($usr);
         $totalPerDay = $this->getDoctrine()->getRepository(Perse::class)->TotalPersePerDay();
 
         var_dump($totalPerDay[0]["total"]);
 
         return $this->render('perse/index.html.twig', array(
-
+            'nbTerna' => $nbterna
+        , 'nbShapeTek' => $nbShapeTek
+        , 'nbCongeShapeTek' => $nbCongeShapeTek,
+            'nbCongeTerna' => $nbCongeTerna
+        , 'nbpresent' => $nbpresentTerna,
+            'nbpresentSh' => $nbpresentSh,
             'listEmployee' => $listEmployee,
-            'listByUser'=>$listByUser,
+            'listByUser'=>$listAllUser,
             'notifications'=>"test",
             'list' => $list ,
             'currentDate'=>$currentdate,
             'totalPerDay'=>$totalPerDay[0]["total"]));
 
-    }
-
-//par mois + jours + user
-    public function calcul()
-    {
-        return $this->render('perse/calcul.html.twig', array(
-            // ...
-        ));
     }
 
     public function listPDF(){

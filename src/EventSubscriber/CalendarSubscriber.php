@@ -41,6 +41,7 @@ class CalendarSubscriber implements EventSubscriberInterface
         $conges = $this->congeRepository
             ->createQueryBuilder('b')
             ->andWhere('b.dateDebut BETWEEN :startDate and :endDate')
+            ->andWhere("b.etat='Validé'  ")
             ->setParameter('startDate', $start->format('Y-m-d H:i:s'))
             ->setParameter('endDate', $end->format('Y-m-d H:i:s'))
             ->getQuery()->getResult();

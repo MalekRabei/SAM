@@ -50,15 +50,22 @@ class PresenceRepository extends ServiceEntityRepository
 
     public function PresentQuery()
     {
-        $sysdate = new \DateTime('now');
-        $current =$sysdate->format("Y-m-d");
+        $currentDateS = new \DateTime('now');
+        $currentDateE = new \DateTime('now');
+
+        var_dump($currentDateS);
+        $start= $currentDateS->setTime(24,00,00);
+        $end = $currentDateE->setTime(0,0);
+
+        $startS= $start->format('Y-m-d H:i:s');
+        $endS= $end->format('Y-m-d H:i:s');
         $query = $this->getEntityManager()
             ->createQuery("SELECT 
              e.id as id ,e.nom as nom , e.prenom as prenom ,
               e.societe as societe, e.poste as poste, e.matricule as matricule,e.code as code,e.t as t , 
              p.poste as idPoste, h.present as present , h.retard as retard , h.datePresence as dateP 
                 from App:Employee e , App:Presence h , App:Poste p
-                where h.datePresence = '$current'
+                where h.datePresence BETWEEN '$endS' AND '$startS'
                 and h.idEmployee = e.id
                 and e.idPoste = p.id
                 group by e.id
@@ -72,7 +79,7 @@ class PresenceRepository extends ServiceEntityRepository
         $currentDateS = new \DateTime('now');
         $currentDateE = new \DateTime('now');
 
-        var_dump($currentDateS);
+        //var_dump($currentDateS);
         $start= $currentDateS->setTime(24,00,00);
         $end = $currentDateE->setTime(0,0);
 
@@ -85,7 +92,7 @@ class PresenceRepository extends ServiceEntityRepository
             FROM App:Presence p , App:User u , App:Poste po
             WHERE p.idUser = u.id
             and u.idPoste= po.id
-            and p.datePresence BETWEEN '$startS' AND '$endS'
+            and p.datePresence BETWEEN '$endS' AND '$startS'
             GROUP BY u.username");
 
         $res = $query->getResult();

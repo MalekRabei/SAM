@@ -61,14 +61,14 @@ class PerseRepository extends ServiceEntityRepository
         $currentDateS = new \DateTime('now');
         $currentDateE = new \DateTime('now');
 
-        var_dump($currentDateS);
+        //var_dump($currentDateS);
         $start= $currentDateS->setTime(24,00,00);
         $end = $currentDateE->setTime(0,0);
 
         $startS= $start->format('Y-m-d H:i:s');
         $endS= $end->format('Y-m-d H:i:s');
-        var_dump($endS);
-        var_dump($startS);
+        //var_dump($endS);
+        //var_dump($startS);
 
         return $this->getEntityManager()
             ->createQuery("SELECT COUNT(perse.id) as total, perse.datePerse as date 
@@ -84,6 +84,19 @@ class PerseRepository extends ServiceEntityRepository
               FROM App:Perse perse ,App:User user
               WHERE perse.idEmployee = $id
               AND perse.idEmployee = user.id
+               ")
+            ->getResult();
+
+    }
+
+
+
+    public function  listAllUsers(){
+        return $this->getEntityManager()
+            ->createQuery("SELECT perse.id as id ,perse.note as note, user.username as username, perse.numPerse as numPerse, 
+            perse.datePerse as datePerse
+              FROM App:Perse perse ,App:User user
+              WHERE perse.idEmployee = user.id
                ")
             ->getResult();
 

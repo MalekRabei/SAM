@@ -116,12 +116,8 @@
                                             <th class="border border-left-0">Societe</th>
                                             <th class="border border-left-0">Présence</th>
                                             <th class="border border-left-0">Retard</th>
-                                            <th class="border border-left-0">Poste</th>
-                                            <th class="border border-left-0">Matricule</th>
-                                            <th class="border border-left-0">COD</th>
-                                            <th class="border border-left-0">T</th>
                                             <th class="border border-left-0">Date Connexion</th>
-                                            <th class="border border-left-0">Positionnement</th>
+                                            <th class="border border-left-0">Poste</th>
 
 
                                             <th>
@@ -207,22 +203,6 @@
                                                 </td>
 
 
-                                                <td >
-                                                    <select class="form-control" id="input-select" style="width:120px" disabled>
-                                                        <option selected> {{ entity.pro }}</option>
-                                                        <option >Directeur</option>
-                                                        <option >Chef D'équipes</option>
-                                                        <option>Informatique</option>
-                                                        <option>WebScan</option>
-                                                        <option>Vidéos</option>
-                                                        <option>Femme de Menage</option>
-
-                                                    </select>
-                                                </td>
-
-                                                <td>{{ entity.matricule }}</td>
-                                                <td>{{ entity.code }}</td>
-                                                <td>{{ entity.t }}</td>
                                                 <td>{{ entity.date |date("m/d/Y H:i:s") }}</td>
 
                                                 <td>

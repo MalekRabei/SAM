@@ -55,13 +55,13 @@ suppAdminConge:
   defaults: { _controller: App\Controller\CongeController::suppConge }
 
 rejeterConge:
-  path:     /admin/validerConge/{id}
-  defaults: { _controller: App\Controller\CongeController::valider }
+  path:     /admin/rejeterConge/{id}
+  defaults: { _controller: App\Controller\CongeController::rejeter }
 
 
 validerConge:
-  path:     /admin/rejeterConge/{id}
-  defaults: { _controller: App\Controller\CongeController::rejeter }
+  path:     /admin/validerConge/{id}
+  defaults: { _controller: App\Controller\CongeController::valider }
 
 listConge:
   path:     /admin/listConge
@@ -121,6 +121,10 @@ suppAutorisation:
 validerAutorisation:
   path:     /admin/autorisation/valider/{id}
   defaults: { _controller: App\Controller\AutorisationController::valider}
+
+rejeterAutorisation:
+  path:     /admin/autorisation/rejeter/{id}
+  defaults: { _controller: App\Controller\AutorisationController::rejeter}
 
 
 
